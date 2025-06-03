@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICRF - Mucha Network League</title>
+    <style>
+      :root {
+        --primary: #f9c80e; /* Yellow */
+        --secondary: #9b59b6; /* Purple */
+        --dark: #1e1e1e; /* Dark */
+        --light: #f8f9fa;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: url("https://wallpapers.com/images/hd/clash-royale-electro-giant-7777dz46x5tw411u.jpg")
+          no-repeat center center fixed;
+        background-size: cover;
+        color: var(--light);
+        min-height: 100vh;
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(30, 30, 30, 0.85);
+        z-index: -1;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 2px solid var(--primary);
+        margin-bottom: 30px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo img {
+        height: 60px;
+        margin-right: 15px;
+      }
+
+      .logo-text h1 {
+        color: var(--primary);
+        margin: 0;
+        font-size: 28px;
+      }
+
+      .logo-text p {
+        color: var(--secondary);
+        margin: 0;
+        font-size: 14px;
+        font-style: italic;
+      }
+
+      .sponsor {
+        color: var(--primary);
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      .login-form {
+        background: rgba(30, 30, 30, 0.9);
+        border: 2px solid var(--secondary);
+        border-radius: 10px;
+        padding: 30px;
+        max-width: 400px;
+        margin: 50px auto;
+        box-shadow: 0 0 20px rgba(155, 89, 182, 0.5);
+      }
+
+      .login-form h2 {
+        color: var(--primary);
+        text-align: center;
+        margin-top: 0;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--primary);
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--secondary);
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 16px;
+      }
+
+      .login-btn {
+        background: var(--primary);
+        color: var(--dark);
+        border: none;
+        padding: 12px 20px;
+        width: 100%;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .login-btn:hover {
+        background: #e6b80e;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(249, 200, 14, 0.4);
+      }
+
+      .league-table-container {
+        background: rgba(30, 30, 30, 0.9);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 30px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        overflow-x: auto;
+      }
+
+      .league-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--secondary);
+        padding-bottom: 10px;
+      }
+
+      .league-header h2 {
+        color: var(--primary);
+        margin: 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      th {
+        background: var(--secondary);
+        color: white;
+        padding: 12px;
+        text-align: left;
+        position: sticky;
+        top: 0;
+      }
+
+      td {
+        padding: 12px;
+        border-bottom: 1px solid rgba(155, 89, 182, 0.3);
+        color: var(--light);
+      }
+
+      tr:hover {
+        background: rgba(155, 89, 182, 0.1);
+      }
+
+      .editable {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(155, 89, 182, 0.5);
+        border-radius: 3px;
+        padding: 8px;
+        min-width: 50px;
+      }
+
+      .editable:focus {
+        outline: 2px solid var(--primary);
+        background: rgba(30, 30, 30, 0.9);
+      }
+
+      .action-btns {
+        display: flex;
+        gap: 10px;
+      }
+
+      .action-btn {
+        background: var(--primary);
+        color: var(--dark);
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.2s;
+      }
+
+      .action-btn:hover {
+        opacity: 0.9;
+      }
+
+      .save-btn {
+        background: #2ecc71;
+        color: white;
+      }
+
+      .add-btn {
+        background: var(--secondary);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+      }
+
+      .add-btn:hover {
+        background: #8e44ad;
+      }
+
+      .delete-btn {
+        background: #e74c3c;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo">
+          <img src="icrf-logo.png" alt="ICRF Logo" />
+          <div class="logo-text">
+            <h1>MUCHA NETWORK LEAGUE</h1>
+            <p>Clash Royale Tournament System</p>
+          </div>
+        </div>
+        <div class="sponsor">Sponsored by: Mucha Network</div>
+      </header>
+
+      <div id="login-section" class="login-form">
+        <h2>Admin Login</h2>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Enter username" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter password" />
+        </div>
+        <button class="login-btn" onclick="login()">LOGIN</button>
+      </div>
+
+      <div id="dashboard" style="display: none">
+        <div id="mucha-network-table" class="league-table-container">
+          <div class="league-header">
+            <h2>Mucha Network League - Current Standings</h2>
+            <div class="action-btns">
+              <button class="action-btn save-btn" onclick="saveData()">
+                Save All
+              </button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Draws</th>
+                <th>Points</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="mucha-players">
+              <!-- Players will be added here dynamically -->
+            </tbody>
+          </table>
+          <button class="add-btn" onclick="addNewRow()">
+            + Add New Player
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // League data
+      const league = {
+        players: [],
+        pointSystem: {
+          win: 3,
+          loss: 0,
+          draw: 1,
+        },
+      };
+
+      // Load data from localStorage
+      function loadData() {
+        const savedData = localStorage.getItem("mucha-league-data");
+        if (savedData) {
+          league.players = JSON.parse(savedData);
+        }
+        renderTable();
+      }
+
+      // Save data to localStorage
+      function saveData() {
+        // Update data from table
+        updateDataFromTable();
+        localStorage.setItem(
+          "mucha-league-data",
+          JSON.stringify(league.players)
+        );
+        alert("Data saved successfully!");
+      }
+
+      // Login function
+      function login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        if (username === "admin" && password === "admin") {
+          document.getElementById("login-section").style.display = "none";
+          document.getElementById("dashboard").style.display = "block";
+          loadData();
+        } else {
+          alert("Invalid credentials. Use admin/admin for demo.");
+        }
+      }
+
+      // Render the editable table
+      function renderTable() {
+        const tableBody = document.getElementById("mucha-players");
+        tableBody.innerHTML = "";
+
+        // Sort players by points (descending)
+        league.players.sort((a, b) => b.points - a.points);
+
+        league.players.forEach((player, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><input type="text" class="editable" value="${
+                      player.name
+                    }" data-field="name"></td>
+                    <td><input type="number" class="editable" value="${
+                      player.wins
+                    }" data-field="wins" min="0"></td>
+                    <td><input type="number" class="editable" value="${
+                      player.losses
+                    }" data-field="losses" min="0"></td>
+                    <td><input type="number" class="editable" value="${
+                      player.draws
+                    }" data-field="draws" min="0"></td>
+                    <td><input type="number" class="editable" value="${
+                      player.points
+                    }" data-field="points" min="0"></td>
+                    <td>
+                        <button class="action-btn delete-btn" onclick="deleteRow(this)">Delete</button>
+                    </td>
+                `;
+          tableBody.appendChild(row);
+        });
+
+        // Add event listeners to all editable cells
+        document.querySelectorAll(".editable").forEach((input) => {
+          input.addEventListener("change", function () {
+            calculatePoints(this);
+          });
+        });
+      }
+
+      // Calculate points based on wins/draws
+      function calculatePoints(inputElement) {
+        const row = inputElement.closest("tr");
+        const wins =
+          parseInt(row.querySelector('[data-field="wins"]').value) || 0;
+        const losses =
+          parseInt(row.querySelector('[data-field="losses"]').value) || 0;
+        const draws =
+          parseInt(row.querySelector('[data-field="draws"]').value) || 0;
+
+        const points =
+          wins * league.pointSystem.win +
+          draws * league.pointSystem.draw +
+          losses * league.pointSystem.loss;
+
+        row.querySelector('[data-field="points"]').value = points;
+      }
+
+      // Add new empty row
+      function addNewRow() {
+        const tableBody = document.getElementById("mucha-players");
+        const newId =
+          league.players.length > 0
+            ? Math.max(...league.players.map((p) => p.id)) + 1
+            : 1;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+                <td>#</td>
+                <td><input type="text" class="editable" value="" data-field="name" placeholder="Player name"></td>
+                <td><input type="number" class="editable" value="0" data-field="wins" min="0"></td>
+                <td><input type="number" class="editable" value="0" data-field="losses" min="0"></td>
+                <td><input type="number" class="editable" value="0" data-field="draws" min="0"></td>
+                <td><input type="number" class="editable" value="0" data-field="points" min="0"></td>
+                <td>
+                    <button class="action-btn delete-btn" onclick="deleteRow(this)">Delete</button>
+                </td>
+            `;
+        tableBody.appendChild(row);
+
+        // Add event listener to new row
+        row.querySelectorAll(".editable").forEach((input) => {
+          input.addEventListener("change", function () {
+            calculatePoints(this);
+          });
+        });
+      }
+
+      // Delete row
+      function deleteRow(button) {
+        if (confirm("Delete this player?")) {
+          const row = button.closest("tr");
+          row.remove();
+          updateDataFromTable();
+          renderTable(); // Re-render to update ranks
+        }
+      }
+
+      // Update league data from table
+      function updateDataFromTable() {
+        const rows = document.querySelectorAll("#mucha-players tr");
+        const players = [];
+
+        rows.forEach((row) => {
+          players.push({
+            name: row.querySelector('[data-field="name"]').value,
+            wins: parseInt(row.querySelector('[data-field="wins"]').value) || 0,
+            losses:
+              parseInt(row.querySelector('[data-field="losses"]').value) || 0,
+            draws:
+              parseInt(row.querySelector('[data-field="draws"]').value) || 0,
+            points:
+              parseInt(row.querySelector('[data-field="points"]').value) || 0,
+          });
+        });
+
+        league.players = players;
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        // Add event listener for Enter key in inputs
+        document.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            e.target.blur(); // Triggers the change event
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

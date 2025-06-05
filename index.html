@@ -4,12 +4,43 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ICRF - Mucha Network League</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <style>
       :root {
         --primary: #f9c80e; /* Yellow */
         --secondary: #9b59b6; /* Purple */
         --dark: #1e1e1e; /* Dark */
         --light: #f8f9fa;
+        --success: #2ecc71;
+        --danger: #e74c3c;
+        --info: #3498db;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
       }
 
       body {
@@ -22,6 +53,7 @@
         color: var(--light);
         min-height: 100vh;
         position: relative;
+        overflow-x: hidden;
       }
 
       body::before {
@@ -48,6 +80,7 @@
         padding: 20px 0;
         border-bottom: 2px solid var(--primary);
         margin-bottom: 30px;
+        flex-wrap: wrap;
       }
 
       .logo {
@@ -58,12 +91,14 @@
       .logo img {
         height: 60px;
         margin-right: 15px;
+        animation: float 3s ease-in-out infinite;
       }
 
       .logo-text h1 {
         color: var(--primary);
         margin: 0;
         font-size: 28px;
+        text-shadow: 0 0 10px rgba(249, 200, 14, 0.5);
       }
 
       .logo-text p {
@@ -77,6 +112,9 @@
         color: var(--primary);
         font-weight: bold;
         font-size: 18px;
+        margin-top: 10px;
+        width: 100%;
+        text-align: center;
       }
 
       .login-form {
@@ -87,6 +125,7 @@
         max-width: 400px;
         margin: 50px auto;
         box-shadow: 0 0 20px rgba(155, 89, 182, 0.5);
+        animation: fadeIn 1s;
       }
 
       .login-form h2 {
@@ -113,6 +152,12 @@
         background: rgba(255, 255, 255, 0.1);
         color: white;
         font-size: 16px;
+        transition: all 0.3s;
+      }
+
+      .form-group input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 10px rgba(249, 200, 14, 0.5);
       }
 
       .login-btn {
@@ -134,13 +179,122 @@
         box-shadow: 0 5px 15px rgba(249, 200, 14, 0.4);
       }
 
+      .dashboard {
+        display: none;
+        animation: fadeIn 1s;
+      }
+
+      .settings-panel {
+        background: rgba(30, 30, 30, 0.9);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--secondary);
+      }
+
+      .settings-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+
+      .settings-header h3 {
+        color: var(--primary);
+        margin: 0;
+      }
+
+      .settings-content {
+        display: none;
+        padding-top: 10px;
+      }
+
+      .settings-content.active {
+        display: block;
+        animation: fadeIn 0.5s;
+      }
+
+      .settings-group {
+        margin-bottom: 15px;
+      }
+
+      .settings-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--light);
+      }
+
+      .settings-group select,
+      .settings-group input {
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid var(--secondary);
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+      }
+
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 24px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: var(--success);
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+
+      .toggle-label {
+        margin-left: 10px;
+        color: var(--light);
+        vertical-align: middle;
+      }
+
       .league-table-container {
         background: rgba(30, 30, 30, 0.9);
         border-radius: 10px;
         padding: 20px;
-        margin-top: 30px;
+        margin-top: 20px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         overflow-x: auto;
+        border: 1px solid var(--secondary);
       }
 
       .league-header {
@@ -150,11 +304,17 @@
         margin-bottom: 20px;
         border-bottom: 1px solid var(--secondary);
         padding-bottom: 10px;
+        flex-wrap: wrap;
       }
 
       .league-header h2 {
         color: var(--primary);
         margin: 0;
+        margin-bottom: 10px;
+      }
+
+      .table-responsive {
+        overflow-x: auto;
       }
 
       table {
@@ -170,6 +330,7 @@
         text-align: left;
         position: sticky;
         top: 0;
+        white-space: nowrap;
       }
 
       td {
@@ -178,8 +339,14 @@
         color: var(--light);
       }
 
+      tr:nth-child(even) {
+        background: rgba(155, 89, 182, 0.05);
+      }
+
       tr:hover {
         background: rgba(155, 89, 182, 0.1);
+        transform: scale(1.01);
+        transition: all 0.2s;
       }
 
       .editable {
@@ -188,35 +355,58 @@
         border-radius: 3px;
         padding: 8px;
         min-width: 50px;
+        color: white;
+        transition: all 0.3s;
       }
 
       .editable:focus {
         outline: 2px solid var(--primary);
         background: rgba(30, 30, 30, 0.9);
+        box-shadow: 0 0 10px rgba(249, 200, 14, 0.5);
       }
 
       .action-btns {
         display: flex;
         gap: 10px;
+        flex-wrap: wrap;
       }
 
-      .action-btn {
-        background: var(--primary);
-        color: var(--dark);
-        border: none;
+      .btn {
         padding: 8px 12px;
         border-radius: 5px;
         cursor: pointer;
         font-weight: bold;
         transition: all 0.2s;
+        border: none;
       }
 
-      .action-btn:hover {
-        opacity: 0.9;
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
 
-      .save-btn {
-        background: #2ecc71;
+      .btn-primary {
+        background: var(--primary);
+        color: var(--dark);
+      }
+
+      .btn-success {
+        background: var(--success);
+        color: white;
+      }
+
+      .btn-danger {
+        background: var(--danger);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: var(--secondary);
+        color: white;
+      }
+
+      .btn-info {
+        background: var(--info);
         color: white;
       }
 
@@ -229,15 +419,186 @@
         cursor: pointer;
         transition: all 0.3s;
         margin-top: 10px;
+        font-weight: bold;
       }
 
       .add-btn:hover {
         background: #8e44ad;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4);
       }
 
-      .delete-btn {
-        background: #e74c3c;
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+        animation: fadeIn 0.3s;
+      }
+
+      .modal-content {
+        background-color: rgba(30, 30, 30, 0.95);
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid var(--primary);
+        border-radius: 10px;
+        width: 80%;
+        max-width: 500px;
+        box-shadow: 0 0 30px rgba(249, 200, 14, 0.5);
+        animation: slideIn 0.5s;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover {
         color: white;
+      }
+
+      .modal-title {
+        color: var(--primary);
+        margin-top: 0;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Mobile styles */
+      @media (max-width: 768px) {
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .logo {
+          margin-bottom: 15px;
+        }
+
+        .logo img {
+          height: 50px;
+        }
+
+        .logo-text h1 {
+          font-size: 24px;
+        }
+
+        .sponsor {
+          text-align: left;
+          font-size: 16px;
+        }
+
+        .league-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .action-btns {
+          margin-top: 10px;
+          width: 100%;
+        }
+
+        .btn {
+          width: 100%;
+          margin-bottom: 5px;
+        }
+
+        th,
+        td {
+          padding: 8px;
+          font-size: 14px;
+        }
+
+        .editable {
+          padding: 5px;
+          width: 100%;
+        }
+
+        .modal-content {
+          width: 95%;
+          margin: 20% auto;
+        }
+      }
+
+      /* Excel-like table styles */
+      .excel-table {
+        border: 1px solid rgba(155, 89, 182, 0.5);
+      }
+
+      .excel-table th {
+        background: var(--secondary);
+        color: white;
+        font-weight: bold;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .excel-table td {
+        border-right: 1px solid rgba(155, 89, 182, 0.3);
+        border-bottom: 1px solid rgba(155, 89, 182, 0.3);
+      }
+
+      .excel-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .excel-table td:last-child {
+        border-right: none;
+      }
+
+      /* Tooltip */
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: var(--dark);
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        border: 1px solid var(--primary);
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
       }
     </style>
   </head>
@@ -245,16 +606,29 @@
     <div class="container">
       <header>
         <div class="logo">
-          <img src="icrf-logo.png" alt="ICRF Logo" />
+          <img
+            src="icrf-logo.png"
+            alt="ICRF Logo"
+            class="animate__animated animate__pulse"
+          />
           <div class="logo-text">
-            <h1>MUCHA NETWORK LEAGUE</h1>
-            <p>Clash Royale Tournament System</p>
+            <h1 class="animate__animated animate__fadeIn">
+              MUCHA NETWORK LEAGUE
+            </h1>
+            <p class="animate__animated animate__fadeIn">
+              Clash Royale Tournament System
+            </p>
           </div>
         </div>
-        <div class="sponsor">Sponsored by: Mucha Network</div>
+        <div class="sponsor animate__animated animate__fadeIn">
+          Sponsored by: Mucha Network
+        </div>
       </header>
 
-      <div id="login-section" class="login-form">
+      <div
+        id="login-section"
+        class="login-form animate__animated animate__fadeIn"
+      >
         <h2>Admin Login</h2>
         <div class="form-group">
           <label for="username">Username</label>
@@ -264,39 +638,194 @@
           <label for="password">Password</label>
           <input type="password" id="password" placeholder="Enter password" />
         </div>
-        <button class="login-btn" onclick="login()">LOGIN</button>
+        <button
+          class="login-btn animate__animated animate__pulse"
+          onclick="login()"
+        >
+          LOGIN
+        </button>
       </div>
 
-      <div id="dashboard" style="display: none">
+      <div id="dashboard" class="dashboard">
+        <div class="settings-panel">
+          <div class="settings-header" onclick="toggleSettings()">
+            <h3><i class="fas fa-cog"></i> Settings</h3>
+            <span id="settings-arrow">▼</span>
+          </div>
+          <div id="settings-content" class="settings-content">
+            <div class="settings-group">
+              <label>Language</label>
+              <select id="language-select">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+              </select>
+            </div>
+
+            <div class="settings-group">
+              <label>Point System</label>
+              <div>
+                <label>Win:</label>
+                <input
+                  type="number"
+                  id="win-points"
+                  value="3"
+                  min="0"
+                  class="editable"
+                  style="width: 60px"
+                />
+              </div>
+              <div>
+                <label>Draw:</label>
+                <input
+                  type="number"
+                  id="draw-points"
+                  value="1"
+                  min="0"
+                  class="editable"
+                  style="width: 60px"
+                />
+              </div>
+              <div>
+                <label>Loss:</label>
+                <input
+                  type="number"
+                  id="loss-points"
+                  value="0"
+                  min="0"
+                  class="editable"
+                  style="width: 60px"
+                />
+              </div>
+            </div>
+
+            <div class="settings-group">
+              <label class="toggle-switch-container">
+                <span class="toggle-label">Auto Calculate Points</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="auto-calculate" checked />
+                  <span class="slider"></span>
+                </label>
+              </label>
+            </div>
+
+            <button class="btn btn-primary" onclick="applySettings()">
+              Apply Settings
+            </button>
+          </div>
+        </div>
+
         <div id="mucha-network-table" class="league-table-container">
           <div class="league-header">
             <h2>Mucha Network League - Current Standings</h2>
             <div class="action-btns">
-              <button class="action-btn save-btn" onclick="saveData()">
-                Save All
+              <button class="btn btn-success" onclick="saveData()">
+                <i class="fas fa-save"></i> Save All
+              </button>
+              <button class="btn btn-info" onclick="showAddPlayerModal()">
+                <i class="fas fa-plus"></i> Add Player
+              </button>
+              <button class="btn btn-secondary" onclick="exportToExcel()">
+                <i class="fas fa-file-export"></i> Export
               </button>
             </div>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Player</th>
-                <th>Wins</th>
-                <th>Losses</th>
-                <th>Draws</th>
-                <th>Points</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="mucha-players">
-              <!-- Players will be added here dynamically -->
-            </tbody>
-          </table>
-          <button class="add-btn" onclick="addNewRow()">
-            + Add New Player
-          </button>
+          <div class="table-responsive">
+            <table class="excel-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Player</th>
+                  <th>
+                    Wins
+                    <span class="tooltip"
+                      >?<span class="tooltiptext"
+                        >Each win:
+                        <span id="win-points-label">3</span> pts</span
+                      ></span
+                    >
+                  </th>
+                  <th>
+                    Losses
+                    <span class="tooltip"
+                      >?<span class="tooltiptext"
+                        >Each loss:
+                        <span id="loss-points-label">0</span> pts</span
+                      ></span
+                    >
+                  </th>
+                  <th>
+                    Draws
+                    <span class="tooltip"
+                      >?<span class="tooltiptext"
+                        >Each draw:
+                        <span id="draw-points-label">1</span> pts</span
+                      ></span
+                    >
+                  </th>
+                  <th>Points</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="mucha-players">
+                <!-- Players will be added here dynamically -->
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Add Player Modal -->
+    <div id="add-player-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('add-player-modal')"
+          >&times;</span
+        >
+        <h3 class="modal-title">Add New Player</h3>
+        <div class="form-group">
+          <label for="new-player-name">Player Name</label>
+          <input
+            type="text"
+            id="new-player-name"
+            class="editable"
+            placeholder="Enter player name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="new-player-wins">Wins</label>
+          <input
+            type="number"
+            id="new-player-wins"
+            class="editable"
+            value="0"
+            min="0"
+          />
+        </div>
+        <div class="form-group">
+          <label for="new-player-losses">Losses</label>
+          <input
+            type="number"
+            id="new-player-losses"
+            class="editable"
+            value="0"
+            min="0"
+          />
+        </div>
+        <div class="form-group">
+          <label for="new-player-draws">Draws</label>
+          <input
+            type="number"
+            id="new-player-draws"
+            class="editable"
+            value="0"
+            min="0"
+          />
+        </div>
+        <button class="btn btn-success" onclick="addPlayerFromModal()">
+          Add Player
+        </button>
       </div>
     </div>
 
@@ -304,10 +833,108 @@
       // League data
       const league = {
         players: [],
-        pointSystem: {
-          win: 3,
-          loss: 0,
-          draw: 1,
+        settings: {
+          pointSystem: {
+            win: 3,
+            loss: 0,
+            draw: 1,
+          },
+          autoCalculate: true,
+          language: "en",
+        },
+        translations: {
+          en: {
+            rank: "Rank",
+            player: "Player",
+            wins: "Wins",
+            losses: "Losses",
+            draws: "Draws",
+            points: "Points",
+            actions: "Actions",
+            save: "Save All",
+            addPlayer: "Add Player",
+            export: "Export",
+            delete: "Delete",
+            confirmDelete: "Delete this player?",
+            settings: "Settings",
+            autoCalculate: "Auto Calculate Points",
+            winPoints: "Win Points",
+            drawPoints: "Draw Points",
+            lossPoints: "Loss Points",
+            apply: "Apply Settings",
+            addNewPlayer: "Add New Player",
+            playerName: "Player Name",
+            cancel: "Cancel",
+          },
+          es: {
+            rank: "Posición",
+            player: "Jugador",
+            wins: "Victorias",
+            losses: "Derrotas",
+            draws: "Empates",
+            points: "Puntos",
+            actions: "Acciones",
+            save: "Guardar Todo",
+            addPlayer: "Añadir Jugador",
+            export: "Exportar",
+            delete: "Eliminar",
+            confirmDelete: "¿Eliminar este jugador?",
+            settings: "Configuración",
+            autoCalculate: "Calcular Puntos Automáticamente",
+            winPoints: "Puntos por Victoria",
+            drawPoints: "Puntos por Empate",
+            lossPoints: "Puntos por Derrota",
+            apply: "Aplicar Configuración",
+            addNewPlayer: "Añadir Nuevo Jugador",
+            playerName: "Nombre del Jugador",
+            cancel: "Cancelar",
+          },
+          fr: {
+            rank: "Rang",
+            player: "Joueur",
+            wins: "Victoires",
+            losses: "Défaites",
+            draws: "Matchs nuls",
+            points: "Points",
+            actions: "Actions",
+            save: "Tout sauvegarder",
+            addPlayer: "Ajouter un joueur",
+            export: "Exporter",
+            delete: "Supprimer",
+            confirmDelete: "Supprimer ce joueur?",
+            settings: "Paramètres",
+            autoCalculate: "Calcul automatique des points",
+            winPoints: "Points pour victoire",
+            drawPoints: "Points pour match nul",
+            lossPoints: "Points pour défaite",
+            apply: "Appliquer les paramètres",
+            addNewPlayer: "Ajouter un nouveau joueur",
+            playerName: "Nom du joueur",
+            cancel: "Annuler",
+          },
+          de: {
+            rank: "Rang",
+            player: "Spieler",
+            wins: "Siege",
+            losses: "Niederlagen",
+            draws: "Unentschieden",
+            points: "Punkte",
+            actions: "Aktionen",
+            save: "Alles speichern",
+            addPlayer: "Spieler hinzufügen",
+            export: "Exportieren",
+            delete: "Löschen",
+            confirmDelete: "Diesen Spieler löschen?",
+            settings: "Einstellungen",
+            autoCalculate: "Punkte automatisch berechnen",
+            winPoints: "Punkte für Sieg",
+            drawPoints: "Punkte für Unentschieden",
+            lossPoints: "Punkte für Niederlage",
+            apply: "Einstellungen übernehmen",
+            addNewPlayer: "Neuen Spieler hinzufügen",
+            playerName: "Spielername",
+            cancel: "Abbrechen",
+          },
         },
       };
 
@@ -317,18 +944,30 @@
         if (savedData) {
           league.players = JSON.parse(savedData);
         }
+
+        const savedSettings = localStorage.getItem("mucha-league-settings");
+        if (savedSettings) {
+          league.settings = JSON.parse(savedSettings);
+          applySettingsToUI();
+        }
+
         renderTable();
       }
 
       // Save data to localStorage
       function saveData() {
-        // Update data from table
         updateDataFromTable();
         localStorage.setItem(
           "mucha-league-data",
           JSON.stringify(league.players)
         );
-        alert("Data saved successfully!");
+
+        localStorage.setItem(
+          "mucha-league-settings",
+          JSON.stringify(league.settings)
+        );
+
+        showNotification("Data saved successfully!", "success");
       }
 
       // Login function
@@ -337,11 +976,22 @@
         const password = document.getElementById("password").value;
 
         if (username === "admin" && password === "admin") {
-          document.getElementById("login-section").style.display = "none";
-          document.getElementById("dashboard").style.display = "block";
-          loadData();
+          document
+            .getElementById("login-section")
+            .classList.add("animate__fadeOut");
+          setTimeout(() => {
+            document.getElementById("login-section").style.display = "none";
+            document.getElementById("dashboard").style.display = "block";
+            document
+              .getElementById("dashboard")
+              .classList.add("animate__fadeIn");
+            loadData();
+          }, 500);
         } else {
-          alert("Invalid credentials. Use admin/admin for demo.");
+          showNotification(
+            "Invalid credentials. Use admin/admin for demo.",
+            "danger"
+          );
         }
       }
 
@@ -357,9 +1007,9 @@
           const row = document.createElement("tr");
           row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td><input type="text" class="editable" value="${
+                    <td><input type="text" class="editable" value="${escapeHtml(
                       player.name
-                    }" data-field="name"></td>
+                    )}" data-field="name"></td>
                     <td><input type="number" class="editable" value="${
                       player.wins
                     }" data-field="wins" min="0"></td>
@@ -371,9 +1021,13 @@
                     }" data-field="draws" min="0"></td>
                     <td><input type="number" class="editable" value="${
                       player.points
-                    }" data-field="points" min="0"></td>
+                    }" data-field="points" min="0" ${
+            league.settings.autoCalculate ? "readonly" : ""
+          }></td>
                     <td>
-                        <button class="action-btn delete-btn" onclick="deleteRow(this)">Delete</button>
+                        <button class="btn btn-danger" onclick="deleteRow(this)">${getTranslation(
+                          "delete"
+                        )}</button>
                     </td>
                 `;
           tableBody.appendChild(row);
@@ -382,13 +1036,30 @@
         // Add event listeners to all editable cells
         document.querySelectorAll(".editable").forEach((input) => {
           input.addEventListener("change", function () {
-            calculatePoints(this);
+            if (
+              league.settings.autoCalculate &&
+              this.dataset.field !== "name"
+            ) {
+              calculatePoints(this);
+            }
+            updateDataFromTable();
+            renderTable(); // Re-render to update ranks
           });
         });
+
+        // Update point labels in tooltips
+        document.getElementById("win-points-label").textContent =
+          league.settings.pointSystem.win;
+        document.getElementById("loss-points-label").textContent =
+          league.settings.pointSystem.loss;
+        document.getElementById("draw-points-label").textContent =
+          league.settings.pointSystem.draw;
       }
 
       // Calculate points based on wins/draws
       function calculatePoints(inputElement) {
+        if (!league.settings.autoCalculate) return;
+
         const row = inputElement.closest("tr");
         const wins =
           parseInt(row.querySelector('[data-field="wins"]').value) || 0;
@@ -398,50 +1069,60 @@
           parseInt(row.querySelector('[data-field="draws"]').value) || 0;
 
         const points =
-          wins * league.pointSystem.win +
-          draws * league.pointSystem.draw +
-          losses * league.pointSystem.loss;
+          wins * league.settings.pointSystem.win +
+          draws * league.settings.pointSystem.draw +
+          losses * league.settings.pointSystem.loss;
 
         row.querySelector('[data-field="points"]').value = points;
       }
 
-      // Add new empty row
-      function addNewRow() {
-        const tableBody = document.getElementById("mucha-players");
-        const newId =
-          league.players.length > 0
-            ? Math.max(...league.players.map((p) => p.id)) + 1
-            : 1;
+      // Add new player from modal
+      function addPlayerFromModal() {
+        const name = document.getElementById("new-player-name").value.trim();
+        const wins =
+          parseInt(document.getElementById("new-player-wins").value) || 0;
+        const losses =
+          parseInt(document.getElementById("new-player-losses").value) || 0;
+        const draws =
+          parseInt(document.getElementById("new-player-draws").value) || 0;
 
-        const row = document.createElement("tr");
-        row.innerHTML = `
-                <td>#</td>
-                <td><input type="text" class="editable" value="" data-field="name" placeholder="Player name"></td>
-                <td><input type="number" class="editable" value="0" data-field="wins" min="0"></td>
-                <td><input type="number" class="editable" value="0" data-field="losses" min="0"></td>
-                <td><input type="number" class="editable" value="0" data-field="draws" min="0"></td>
-                <td><input type="number" class="editable" value="0" data-field="points" min="0"></td>
-                <td>
-                    <button class="action-btn delete-btn" onclick="deleteRow(this)">Delete</button>
-                </td>
-            `;
-        tableBody.appendChild(row);
+        if (!name) {
+          showNotification("Please enter a player name", "danger");
+          return;
+        }
 
-        // Add event listener to new row
-        row.querySelectorAll(".editable").forEach((input) => {
-          input.addEventListener("change", function () {
-            calculatePoints(this);
-          });
-        });
+        const points = league.settings.autoCalculate
+          ? wins * league.settings.pointSystem.win +
+            draws * league.settings.pointSystem.draw +
+            losses * league.settings.pointSystem.loss
+          : 0;
+
+        const newPlayer = {
+          id:
+            league.players.length > 0
+              ? Math.max(...league.players.map((p) => p.id)) + 1
+              : 1,
+          name: name,
+          wins: wins,
+          losses: losses,
+          draws: draws,
+          points: points,
+        };
+
+        league.players.push(newPlayer);
+        closeModal("add-player-modal");
+        renderTable();
+        showNotification("Player added successfully!", "success");
       }
 
       // Delete row
       function deleteRow(button) {
-        if (confirm("Delete this player?")) {
+        if (confirm(getTranslation("confirmDelete"))) {
           const row = button.closest("tr");
-          row.remove();
-          updateDataFromTable();
-          renderTable(); // Re-render to update ranks
+          const rowIndex = Array.from(row.parentNode.children).indexOf(row);
+          league.players.splice(rowIndex, 1);
+          renderTable();
+          showNotification("Player deleted", "info");
         }
       }
 
@@ -466,6 +1147,183 @@
         league.players = players;
       }
 
+      // Toggle settings panel
+      function toggleSettings() {
+        const settingsContent = document.getElementById("settings-content");
+        const arrow = document.getElementById("settings-arrow");
+
+        settingsContent.classList.toggle("active");
+        arrow.textContent = settingsContent.classList.contains("active")
+          ? "▲"
+          : "▼";
+      }
+
+      // Apply settings from UI
+      function applySettings() {
+        league.settings.pointSystem.win =
+          parseInt(document.getElementById("win-points").value) || 0;
+        league.settings.pointSystem.draw =
+          parseInt(document.getElementById("draw-points").value) || 0;
+        league.settings.pointSystem.loss =
+          parseInt(document.getElementById("loss-points").value) || 0;
+        league.settings.autoCalculate =
+          document.getElementById("auto-calculate").checked;
+        league.settings.language =
+          document.getElementById("language-select").value;
+
+        if (league.settings.autoCalculate) {
+          // Recalculate all points
+          league.players.forEach((player) => {
+            player.points =
+              player.wins * league.settings.pointSystem.win +
+              player.draws * league.settings.pointSystem.draw +
+              player.losses * league.settings.pointSystem.loss;
+          });
+        }
+
+        saveData();
+        renderTable();
+        translateUI();
+        showNotification("Settings applied successfully!", "success");
+      }
+
+      // Apply saved settings to UI
+      function applySettingsToUI() {
+        document.getElementById("win-points").value =
+          league.settings.pointSystem.win;
+        document.getElementById("draw-points").value =
+          league.settings.pointSystem.draw;
+        document.getElementById("loss-points").value =
+          league.settings.pointSystem.loss;
+        document.getElementById("auto-calculate").checked =
+          league.settings.autoCalculate;
+        document.getElementById("language-select").value =
+          league.settings.language;
+      }
+
+      // Show add player modal
+      function showAddPlayerModal() {
+        document.getElementById("new-player-name").value = "";
+        document.getElementById("new-player-wins").value = "0";
+        document.getElementById("new-player-losses").value = "0";
+        document.getElementById("new-player-draws").value = "0";
+        document.getElementById("add-player-modal").style.display = "block";
+      }
+
+      // Close modal
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+      }
+
+      // Export to Excel-like format
+      function exportToExcel() {
+        let csv = "Rank,Player,Wins,Losses,Draws,Points\n";
+
+        league.players.forEach((player, index) => {
+          csv += `${index + 1},"${player.name}",${player.wins},${
+            player.losses
+          },${player.draws},${player.points}\n`;
+        });
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.setAttribute("hidden", "");
+        a.setAttribute("href", url);
+        a.setAttribute("download", "mucha_league_standings.csv");
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        showNotification("Data exported to CSV", "success");
+      }
+
+      // Show notification
+      function showNotification(message, type) {
+        const notification = document.createElement("div");
+        notification.className = `notification animate__animated animate__fadeInDown ${type}`;
+        notification.textContent = message;
+        notification.style.position = "fixed";
+        notification.style.top = "20px";
+        notification.style.right = "20px";
+        notification.style.padding = "15px";
+        notification.style.borderRadius = "5px";
+        notification.style.color = "white";
+        notification.style.zIndex = "1000";
+        notification.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
+
+        if (type === "success") {
+          notification.style.background = "var(--success)";
+        } else if (type === "danger") {
+          notification.style.background = "var(--danger)";
+        } else if (type === "info") {
+          notification.style.background = "var(--info)";
+        }
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.classList.remove("animate__fadeInDown");
+          notification.classList.add("animate__fadeOutUp");
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 500);
+        }, 3000);
+      }
+
+      // Translate UI elements
+      function translateUI() {
+        const lang = league.settings.language;
+        const t = league.translations[lang];
+
+        // Table headers
+        document.querySelectorAll("th")[0].textContent = t.rank;
+        document.querySelectorAll("th")[1].textContent = t.player;
+        document.querySelectorAll("th")[2].textContent = t.wins;
+        document.querySelectorAll("th")[3].textContent = t.losses;
+        document.querySelectorAll("th")[4].textContent = t.draws;
+        document.querySelectorAll("th")[5].textContent = t.points;
+        document.querySelectorAll("th")[6].textContent = t.actions;
+
+        // Buttons
+        document.querySelector(
+          ".btn-success"
+        ).innerHTML = `<i class="fas fa-save"></i> ${t.save}`;
+        document.querySelector(
+          ".btn-info"
+        ).innerHTML = `<i class="fas fa-plus"></i> ${t.addPlayer}`;
+        document.querySelector(
+          ".btn-secondary"
+        ).innerHTML = `<i class="fas fa-file-export"></i> ${t.export}`;
+
+        // Settings
+        document.querySelector(
+          ".settings-header h3"
+        ).innerHTML = `<i class="fas fa-cog"></i> ${t.settings}`;
+        document.querySelector(".toggle-label").textContent = t.autoCalculate;
+        document.querySelector(".btn-primary").textContent = t.apply;
+
+        // Modal
+        document.querySelector(".modal-title").textContent = t.addNewPlayer;
+        document.querySelector("#new-player-name").placeholder = t.playerName;
+        document.querySelector(".btn-success").textContent = t.addPlayer;
+      }
+
+      // Get translation
+      function getTranslation(key) {
+        return league.translations[league.settings.language][key] || key;
+      }
+
+      // Escape HTML to prevent XSS
+      function escapeHtml(unsafe) {
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
       // Initialize
       document.addEventListener("DOMContentLoaded", () => {
         // Add event listener for Enter key in inputs
@@ -474,7 +1332,18 @@
             e.target.blur(); // Triggers the change event
           }
         });
+
+        // Close modal when clicking outside
+        window.addEventListener("click", function (event) {
+          if (event.target.classList.contains("modal")) {
+            event.target.style.display = "none";
+          }
+        });
       });
     </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
   </body>
 </html>

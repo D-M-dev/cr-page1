@@ -1,320 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ICRF - Mucha Network League</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
+    <title>Clash Royale Turnaj</title>
     <style>
       :root {
-        --primary: #f9c80e; /* Yellow */
-        --secondary: #9b59b6; /* Purple */
-        --dark: #1e1e1e; /* Dark */
-        --light: #f8f9fa;
-        --success: #2ecc71;
-        --danger: #e74c3c;
-        --info: #3498db;
+        --primary-color: #ff7b25;
+        --light-color: #ffeadb;
+        --dark-color: #d45a0c;
+        --text-color: #333;
+        --bg-color: #fff;
+        --border-radius: 4px;
       }
 
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      @keyframes float {
-        0% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-10px);
-        }
-        100% {
-          transform: translateY(0px);
-        }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 0;
-        background: url("https://wallpapers.com/images/hd/clash-royale-electro-giant-7777dz46x5tw411u.jpg")
-          no-repeat center center fixed;
-        background-size: cover;
-        color: var(--light);
-        min-height: 100vh;
-        position: relative;
-        overflow-x: hidden;
-      }
-
-      body::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(30, 30, 30, 0.85);
-        z-index: -1;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
       }
 
       .container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 0 15px;
       }
 
       header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 0;
-        border-bottom: 2px solid var(--primary);
-        margin-bottom: 30px;
-        flex-wrap: wrap;
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-      }
-
-      .logo img {
-        height: 60px;
-        margin-right: 15px;
-        animation: float 3s ease-in-out infinite;
-      }
-
-      .logo-text h1 {
-        color: var(--primary);
-        margin: 0;
-        font-size: 28px;
-        text-shadow: 0 0 10px rgba(249, 200, 14, 0.5);
-      }
-
-      .logo-text p {
-        color: var(--secondary);
-        margin: 0;
-        font-size: 14px;
-        font-style: italic;
-      }
-
-      .sponsor {
-        color: var(--primary);
-        font-weight: bold;
-        font-size: 18px;
-        margin-top: 10px;
-        width: 100%;
-        text-align: center;
-      }
-
-      .login-form {
-        background: rgba(30, 30, 30, 0.9);
-        border: 2px solid var(--secondary);
-        border-radius: 10px;
-        padding: 30px;
-        max-width: 400px;
-        margin: 50px auto;
-        box-shadow: 0 0 20px rgba(155, 89, 182, 0.5);
-        animation: fadeIn 1s;
-      }
-
-      .login-form h2 {
-        color: var(--primary);
-        text-align: center;
-        margin-top: 0;
-      }
-
-      .form-group {
+        padding: 15px 0;
+        border-bottom: 1px solid var(--light-color);
         margin-bottom: 20px;
       }
 
-      .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--primary);
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--primary-color);
       }
 
-      .form-group input {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid var(--secondary);
-        border-radius: 5px;
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        font-size: 16px;
-        transition: all 0.3s;
-      }
-
-      .form-group input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 10px rgba(249, 200, 14, 0.5);
+      .admin-login {
+        position: relative;
       }
 
       .login-btn {
-        background: var(--primary);
-        color: var(--dark);
-        border: none;
-        padding: 12px 20px;
-        width: 100%;
-        border-radius: 5px;
-        font-size: 16px;
-        font-weight: bold;
+        background: none;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+        padding: 5px 15px;
+        border-radius: var(--border-radius);
         cursor: pointer;
         transition: all 0.3s;
       }
 
       .login-btn:hover {
-        background: #e6b80e;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(249, 200, 14, 0.4);
-      }
-
-      .dashboard {
-        display: none;
-        animation: fadeIn 1s;
-      }
-
-      .settings-panel {
-        background: rgba(30, 30, 30, 0.9);
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        border: 1px solid var(--secondary);
-      }
-
-      .settings-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        margin-bottom: 10px;
-      }
-
-      .settings-header h3 {
-        color: var(--primary);
-        margin: 0;
-      }
-
-      .settings-content {
-        display: none;
-        padding-top: 10px;
-      }
-
-      .settings-content.active {
-        display: block;
-        animation: fadeIn 0.5s;
-      }
-
-      .settings-group {
-        margin-bottom: 15px;
-      }
-
-      .settings-group label {
-        display: block;
-        margin-bottom: 5px;
-        color: var(--light);
-      }
-
-      .settings-group select,
-      .settings-group input {
-        width: 100%;
-        padding: 8px;
-        border-radius: 5px;
-        border: 1px solid var(--secondary);
-        background: rgba(255, 255, 255, 0.1);
+        background-color: var(--primary-color);
         color: white;
       }
 
-      .toggle-switch {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 24px;
-      }
-
-      .toggle-switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-      }
-
-      .slider {
+      .login-form {
         position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
+        top: 100%;
         right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: 0.4s;
-        border-radius: 24px;
+        background-color: var(--bg-color);
+        border: 1px solid var(--light-color);
+        padding: 15px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 100;
+        width: 250px;
       }
 
-      .slider:before {
-        position: absolute;
-        content: "";
-        height: 16px;
-        width: 16px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        transition: 0.4s;
-        border-radius: 50%;
+      .login-form.active {
+        display: block;
       }
 
-      input:checked + .slider {
-        background-color: var(--success);
-      }
-
-      input:checked + .slider:before {
-        transform: translateX(26px);
-      }
-
-      .toggle-label {
-        margin-left: 10px;
-        color: var(--light);
-        vertical-align: middle;
-      }
-
-      .league-table-container {
-        background: rgba(30, 30, 30, 0.9);
-        border-radius: 10px;
-        padding: 20px;
-        margin-top: 20px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        overflow-x: auto;
-        border: 1px solid var(--secondary);
-      }
-
-      .league-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        border-bottom: 1px solid var(--secondary);
-        padding-bottom: 10px;
-        flex-wrap: wrap;
-      }
-
-      .league-header h2 {
-        color: var(--primary);
-        margin: 0;
+      .login-form input {
+        width: 100%;
+        padding: 8px;
         margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
       }
 
-      .table-responsive {
+      .login-form button {
+        width: 100%;
+        padding: 8px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+      }
+
+      .nav-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--light-color);
+        margin-bottom: 20px;
         overflow-x: auto;
+      }
+
+      .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-bottom: none;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        white-space: nowrap;
+      }
+
+      .tab.active {
+        border-color: var(--light-color);
+        border-bottom: 1px solid var(--bg-color);
+        margin-bottom: -1px;
+        color: var(--primary-color);
+      }
+
+      .tab:hover:not(.active) {
+        background-color: var(--light-color);
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
       }
 
       table {
@@ -323,1028 +144,963 @@
         margin-bottom: 20px;
       }
 
-      th {
-        background: var(--secondary);
-        color: white;
-        padding: 12px;
-        text-align: left;
-        position: sticky;
-        top: 0;
-        white-space: nowrap;
-      }
-
+      th,
       td {
-        padding: 12px;
-        border-bottom: 1px solid rgba(155, 89, 182, 0.3);
-        color: var(--light);
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid var(--light-color);
       }
 
-      tr:nth-child(even) {
-        background: rgba(155, 89, 182, 0.05);
+      th {
+        background-color: var(--light-color);
+        font-weight: 600;
       }
 
       tr:hover {
-        background: rgba(155, 89, 182, 0.1);
-        transform: scale(1.01);
-        transition: all 0.2s;
+        background-color: rgba(255, 123, 37, 0.05);
       }
 
-      .editable {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(155, 89, 182, 0.5);
-        border-radius: 3px;
+      .player-link {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .player-link:hover {
+        text-decoration: underline;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
         padding: 8px;
-        min-width: 50px;
-        color: white;
-        transition: all 0.3s;
-      }
-
-      .editable:focus {
-        outline: 2px solid var(--primary);
-        background: rgba(30, 30, 30, 0.9);
-        box-shadow: 0 0 10px rgba(249, 200, 14, 0.5);
-      }
-
-      .action-btns {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
       }
 
       .btn {
-        padding: 8px 12px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: all 0.2s;
+        padding: 8px 15px;
+        background-color: var(--primary-color);
+        color: white;
         border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: background-color 0.3s;
       }
 
       .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-
-      .btn-primary {
-        background: var(--primary);
-        color: var(--dark);
-      }
-
-      .btn-success {
-        background: var(--success);
-        color: white;
-      }
-
-      .btn-danger {
-        background: var(--danger);
-        color: white;
+        background-color: var(--dark-color);
       }
 
       .btn-secondary {
-        background: var(--secondary);
-        color: white;
+        background-color: #6c757d;
       }
 
-      .btn-info {
-        background: var(--info);
-        color: white;
+      .btn-secondary:hover {
+        background-color: #5a6268;
       }
 
-      .add-btn {
-        background: var(--secondary);
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s;
+      .alert {
+        padding: 10px 15px;
+        border-radius: var(--border-radius);
+        margin-bottom: 15px;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .deck-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
         margin-top: 10px;
-        font-weight: bold;
       }
 
-      .add-btn:hover {
-        background: #8e44ad;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4);
+      .deck-card {
+        width: 60px;
+        height: 80px;
+        background-color: var(--light-color);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        text-align: center;
+        word-break: break-word;
+        padding: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       }
 
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 100;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.8);
-        animation: fadeIn 0.3s;
+      .deck-card img {
+        max-width: 100%;
+        max-height: 100%;
       }
 
-      .modal-content {
-        background-color: rgba(30, 30, 30, 0.95);
-        margin: 10% auto;
+      .rules-container {
         padding: 20px;
-        border: 1px solid var(--primary);
-        border-radius: 10px;
-        width: 80%;
-        max-width: 500px;
-        box-shadow: 0 0 30px rgba(249, 200, 14, 0.5);
-        animation: slideIn 0.5s;
+        background-color: var(--light-color);
+        border-radius: var(--border-radius);
       }
 
-      .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
+      .rules-container h3 {
+        margin-top: 15px;
+        color: var(--primary-color);
       }
 
-      .close:hover {
-        color: white;
+      .rules-container ul {
+        margin-left: 20px;
       }
 
-      .modal-title {
-        color: var(--primary);
-        margin-top: 0;
+      .rules-container li {
+        margin-bottom: 5px;
       }
 
-      /* Animations */
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: translateY(-50px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      /* Mobile styles */
       @media (max-width: 768px) {
-        header {
-          flex-direction: column;
-          align-items: flex-start;
+        .nav-tabs {
+          flex-wrap: wrap;
         }
 
-        .logo {
-          margin-bottom: 15px;
+        .tab {
+          flex: 1 0 auto;
+          text-align: center;
         }
 
-        .logo img {
-          height: 50px;
-        }
-
-        .logo-text h1 {
-          font-size: 24px;
-        }
-
-        .sponsor {
-          text-align: left;
-          font-size: 16px;
-        }
-
-        .league-header {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .action-btns {
-          margin-top: 10px;
-          width: 100%;
-        }
-
-        .btn {
-          width: 100%;
-          margin-bottom: 5px;
+        table {
+          font-size: 14px;
         }
 
         th,
         td {
-          padding: 8px;
-          font-size: 14px;
+          padding: 8px 5px;
         }
-
-        .editable {
-          padding: 5px;
-          width: 100%;
-        }
-
-        .modal-content {
-          width: 95%;
-          margin: 20% auto;
-        }
-      }
-
-      /* Excel-like table styles */
-      .excel-table {
-        border: 1px solid rgba(155, 89, 182, 0.5);
-      }
-
-      .excel-table th {
-        background: var(--secondary);
-        color: white;
-        font-weight: bold;
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .excel-table td {
-        border-right: 1px solid rgba(155, 89, 182, 0.3);
-        border-bottom: 1px solid rgba(155, 89, 182, 0.3);
-      }
-
-      .excel-table tr:last-child td {
-        border-bottom: none;
-      }
-
-      .excel-table td:last-child {
-        border-right: none;
-      }
-
-      /* Tooltip */
-      .tooltip {
-        position: relative;
-        display: inline-block;
-      }
-
-      .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: var(--dark);
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px;
-        position: absolute;
-        z-index: 1;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -60px;
-        opacity: 0;
-        transition: opacity 0.3s;
-        border: 1px solid var(--primary);
-      }
-
-      .tooltip:hover .tooltiptext {
-        visibility: visible;
-        opacity: 1;
       }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <div class="logo">
-          <img
-            src="https://i.ibb.co/VWzfnzN0/718bb6cf-ae59-4e55-8cbe-90d35e322801-removalai-preview.png"
-            alt="ICRF Logo"
-            class="animate__animated animate__pulse"
-          />
-          <div class="logo-text">
-            <h1 class="animate__animated animate__fadeIn">
-              MUCHA NETWORK LEAGUE
-            </h1>
-            <p class="animate__animated animate__fadeIn">
-              Clash Royale Tournament System
-            </p>
+        <div class="logo">Clash Royale Turnaj</div>
+        <div class="admin-login">
+          <button class="login-btn" id="loginBtn">Admin Login</button>
+          <div class="login-form" id="loginForm">
+            <input type="text" id="adminUsername" placeholder="Username" />
+            <input type="password" id="adminPassword" placeholder="Password" />
+            <button class="btn" id="submitLogin">Přihlásit</button>
           </div>
-        </div>
-        <div class="sponsor animate__animated animate__fadeIn">
-          Sponsored by: Mucha Network
         </div>
       </header>
 
-      <div
-        id="login-section"
-        class="login-form animate__animated animate__fadeIn"
-      >
-        <h2>Admin Login</h2>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" placeholder="Enter username" />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Enter password" />
-        </div>
-        <button
-          class="login-btn animate__animated animate__pulse"
-          onclick="login()"
-        >
-          LOGIN
-        </button>
+      <div class="nav-tabs">
+        <div class="tab active" data-tab="leaderboard">Leaderboard</div>
+        <div class="tab" data-tab="matches">Zápasy</div>
+        <div class="tab" data-tab="players">Hráči</div>
+        <div class="tab" data-tab="rules">Pravidla</div>
       </div>
 
-      <div id="dashboard" class="dashboard">
-        <div class="settings-panel">
-          <div class="settings-header" onclick="toggleSettings()">
-            <h3><i class="fas fa-cog"></i> Settings</h3>
-            <span id="settings-arrow">▼</span>
-          </div>
-          <div id="settings-content" class="settings-content">
-            <div class="settings-group">
-              <label>Language</label>
-              <select id="language-select">
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="fr">Français</option>
-                <option value="de">Deutsch</option>
+      <div class="tab-content active" id="leaderboard">
+        <h2>Leaderboard</h2>
+        <table id="leaderboardTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Jméno</th>
+              <th>Tag</th>
+              <th>Výhry</th>
+              <th>Prohry</th>
+              <th>Body</th>
+              <th>Skóre</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            <!-- Leaderboard data will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-content" id="matches">
+        <h2>Log zápasů</h2>
+        <div
+          id="matchesAdminControls"
+          style="display: none; margin-bottom: 20px"
+        >
+          <button class="btn" id="addMatchBtn">Přidat zápas</button>
+        </div>
+        <table id="matchesTable">
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Hráč 1</th>
+              <th>Hráč 2</th>
+              <th>Výsledek</th>
+              <th>Skóre</th>
+              <th>Poznámka</th>
+            </tr>
+          </thead>
+          <tbody id="matchesBody">
+            <!-- Matches data will be loaded here -->
+          </tbody>
+        </table>
+
+        <div id="matchFormContainer" style="display: none; margin-top: 20px">
+          <h3>Přidat nový zápas</h3>
+          <form id="matchForm">
+            <div class="form-group">
+              <label for="matchPlayer1">Hráč 1</label>
+              <select id="matchPlayer1" required>
+                <!-- Players will be loaded here -->
               </select>
             </div>
-
-            <div class="settings-group">
-              <label>Point System</label>
-              <div>
-                <label>Win:</label>
-                <input
-                  type="number"
-                  id="win-points"
-                  value="3"
-                  min="0"
-                  class="editable"
-                  style="width: 60px"
-                />
-              </div>
-              <div>
-                <label>Draw:</label>
-                <input
-                  type="number"
-                  id="draw-points"
-                  value="1"
-                  min="0"
-                  class="editable"
-                  style="width: 60px"
-                />
-              </div>
-              <div>
-                <label>Loss:</label>
-                <input
-                  type="number"
-                  id="loss-points"
-                  value="0"
-                  min="0"
-                  class="editable"
-                  style="width: 60px"
-                />
-              </div>
+            <div class="form-group">
+              <label for="matchPlayer2">Hráč 2</label>
+              <select id="matchPlayer2" required>
+                <!-- Players will be loaded here -->
+              </select>
             </div>
-
-            <div class="settings-group">
-              <label class="toggle-switch-container">
-                <span class="toggle-label">Auto Calculate Points</span>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="auto-calculate" checked />
-                  <span class="slider"></span>
-                </label>
-              </label>
+            <div class="form-group">
+              <label for="matchWinner">Vítěz</label>
+              <select id="matchWinner" required>
+                <option value="">Vyberte vítěze</option>
+                <option value="1">Hráč 1</option>
+                <option value="2">Hráč 2</option>
+              </select>
             </div>
-
-            <button class="btn btn-primary" onclick="applySettings()">
-              Apply Settings
+            <div class="form-group">
+              <label for="matchScore">Skóre (např. 3-1)</label>
+              <input type="text" id="matchScore" placeholder="3-1" required />
+            </div>
+            <div class="form-group">
+              <label for="matchNote">Poznámka</label>
+              <textarea id="matchNote" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn">Uložit</button>
+            <button type="button" class="btn btn-secondary" id="cancelMatchBtn">
+              Zrušit
             </button>
-          </div>
-        </div>
-
-        <div id="mucha-network-table" class="league-table-container">
-          <div class="league-header">
-            <h2>Mucha Network League - Current Standings</h2>
-            <div class="action-btns">
-              <button class="btn btn-success" onclick="saveData()">
-                <i class="fas fa-save"></i> Save All
-              </button>
-              <button class="btn btn-info" onclick="showAddPlayerModal()">
-                <i class="fas fa-plus"></i> Add Player
-              </button>
-              <button class="btn btn-secondary" onclick="exportToExcel()">
-                <i class="fas fa-file-export"></i> Export
-              </button>
-            </div>
-          </div>
-          <div class="table-responsive">
-            <table class="excel-table">
-              <thead>
-                <tr>
-                  <th>Rank</th>
-                  <th>Player</th>
-                  <th>
-                    Wins
-                    <span class="tooltip"
-                      >?<span class="tooltiptext"
-                        >Each win:
-                        <span id="win-points-label">3</span> pts</span
-                      ></span
-                    >
-                  </th>
-                  <th>
-                    Losses
-                    <span class="tooltip"
-                      >?<span class="tooltiptext"
-                        >Each loss:
-                        <span id="loss-points-label">0</span> pts</span
-                      ></span
-                    >
-                  </th>
-                  <th>
-                    Draws
-                    <span class="tooltip"
-                      >?<span class="tooltiptext"
-                        >Each draw:
-                        <span id="draw-points-label">1</span> pts</span
-                      ></span
-                    >
-                  </th>
-                  <th>Points</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="mucha-players">
-                <!-- Players will be added here dynamically -->
-              </tbody>
-            </table>
-          </div>
+          </form>
         </div>
       </div>
-    </div>
 
-    <!-- Add Player Modal -->
-    <div id="add-player-modal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeModal('add-player-modal')"
-          >&times;</span
+      <div class="tab-content" id="players">
+        <h2>Správa hráčů</h2>
+        <div
+          id="playersAdminControls"
+          style="display: none; margin-bottom: 20px"
         >
-        <h3 class="modal-title">Add New Player</h3>
-        <div class="form-group">
-          <label for="new-player-name">Player Name</label>
-          <input
-            type="text"
-            id="new-player-name"
-            class="editable"
-            placeholder="Enter player name"
-          />
+          <button class="btn" id="addPlayerBtn">Přidat hráče</button>
         </div>
-        <div class="form-group">
-          <label for="new-player-wins">Wins</label>
-          <input
-            type="number"
-            id="new-player-wins"
-            class="editable"
-            value="0"
-            min="0"
-          />
+        <table id="playersTable">
+          <thead>
+            <tr>
+              <th>Jméno</th>
+              <th>Tag</th>
+              <th>Výhry</th>
+              <th>Prohry</th>
+              <th>Body</th>
+              <th>Skóre</th>
+              <th>Akce</th>
+            </tr>
+          </thead>
+          <tbody id="playersBody">
+            <!-- Players data will be loaded here -->
+          </tbody>
+        </table>
+
+        <div id="playerFormContainer" style="display: none; margin-top: 20px">
+          <h3 id="playerFormTitle">Přidat nového hráče</h3>
+          <form id="playerForm">
+            <input type="hidden" id="playerId" />
+            <div class="form-group">
+              <label for="playerName">Jméno</label>
+              <input type="text" id="playerName" required />
+            </div>
+            <div class="form-group">
+              <label for="playerTag">Tag hráče (např. #ABC123)</label>
+              <input type="text" id="playerTag" required />
+            </div>
+            <div class="form-group">
+              <label for="playerWins">Výhry</label>
+              <input type="number" id="playerWins" value="0" min="0" />
+            </div>
+            <div class="form-group">
+              <label for="playerLosses">Prohry</label>
+              <input type="number" id="playerLosses" value="0" min="0" />
+            </div>
+            <div class="form-group">
+              <label for="playerPoints">Body</label>
+              <input type="number" id="playerPoints" value="0" min="0" />
+            </div>
+            <div class="form-group">
+              <label for="playerScore">Skóre</label>
+              <input type="text" id="playerScore" value="0-0" />
+            </div>
+            <div id="deckInfo" style="display: none; margin-bottom: 15px">
+              <h4>Deck hráče</h4>
+              <div class="deck-container" id="deckContainer">
+                <!-- Deck cards will be loaded here -->
+              </div>
+            </div>
+            <button type="submit" class="btn">Uložit</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="cancelPlayerBtn"
+            >
+              Zrušit
+            </button>
+          </form>
         </div>
-        <div class="form-group">
-          <label for="new-player-losses">Losses</label>
-          <input
-            type="number"
-            id="new-player-losses"
-            class="editable"
-            value="0"
-            min="0"
-          />
+      </div>
+
+      <div class="tab-content" id="rules">
+        <h2>Pravidla turnaje</h2>
+        <div class="rules-container">
+          <h3>📜 PRAVIDLA</h3>
+          <ul>
+            <li>
+              Je nutné pro start v lize být v klanu 4 veterani nebo aspoň mít
+              všechny hráče ve friendech
+            </li>
+            <li>Přidávání nových hráčů bez povolení founderů je zakázáno</li>
+            <li>
+              Během hracího dne je povinnost odehrát všechny zápasy ve své
+              divizi, jinak trestáno odečítáním 3 bodů, v případě delší
+              neaktivity ban dle dohody founderů
+            </li>
+            <li>V případě nejasností kontaktovat foundery</li>
+          </ul>
+
+          <h3>📈 SYSTÉM</h3>
+          <ul>
+            <li>
+              Každá divize 1 až 3 má 4 hráče, kteří mezi sebou hrají zápasy
+              (každý s každým jeden zápas). Na módu se dohodnou hráči. Na konci
+              ligy je playoff:
+            </li>
+            <li>hráč x 4. hráč</li>
+            <li>hráč x 3. hráč</li>
+            <li>Semifinále a boj o TOP 3.</li>
+            <li>Hráč na 4. místě sestupuje, vítěz postupuje.</li>
+            <li>Výhra v základní hrací době = 3 body</li>
+            <li>Výhra v overtime = 2 body, poražený 1 bod</li>
+            <li>Skóre zničených towerek se počítá při shodě bodů</li>
+          </ul>
         </div>
-        <div class="form-group">
-          <label for="new-player-draws">Draws</label>
-          <input
-            type="number"
-            id="new-player-draws"
-            class="editable"
-            value="0"
-            min="0"
-          />
-        </div>
-        <button class="btn btn-success" onclick="addPlayerFromModal()">
-          Add Player
-        </button>
       </div>
     </div>
 
     <script>
-      // League data
-      const league = {
-        players: [],
-        settings: {
-          pointSystem: {
-            win: 3,
-            loss: 0,
-            draw: 1,
-          },
-          autoCalculate: true,
-          language: "en",
-        },
-        translations: {
-          en: {
-            rank: "Rank",
-            player: "Player",
-            wins: "Wins",
-            losses: "Losses",
-            draws: "Matchs",
-            points: "Points",
-            actions: "Actions",
-            save: "Save All",
-            addPlayer: "Add Player",
-            export: "Export",
-            delete: "Delete",
-            confirmDelete: "Delete this player?",
-            settings: "Settings",
-            autoCalculate: "Auto Calculate Points",
-            winPoints: "Win Points",
-            drawPoints: "Draw Points",
-            lossPoints: "Loss Points",
-            apply: "Apply Settings",
-            addNewPlayer: "Add New Player",
-            playerName: "Player Name",
-            cancel: "Cancel",
-          },
-          es: {
-            rank: "Posición",
-            player: "Jugador",
-            wins: "Victorias",
-            losses: "Derrotas",
-            draws: "Empates",
-            points: "Puntos",
-            actions: "Acciones",
-            save: "Guardar Todo",
-            addPlayer: "Añadir Jugador",
-            export: "Exportar",
-            delete: "Eliminar",
-            confirmDelete: "¿Eliminar este jugador?",
-            settings: "Configuración",
-            autoCalculate: "Calcular Puntos Automáticamente",
-            winPoints: "Puntos por Victoria",
-            drawPoints: "Puntos por Empate",
-            lossPoints: "Puntos por Derrota",
-            apply: "Aplicar Configuración",
-            addNewPlayer: "Añadir Nuevo Jugador",
-            playerName: "Nombre del Jugador",
-            cancel: "Cancelar",
-          },
-          fr: {
-            rank: "Rang",
-            player: "Joueur",
-            wins: "Victoires",
-            losses: "Défaites",
-            draws: "Matchs nuls",
-            points: "Points",
-            actions: "Actions",
-            save: "Tout sauvegarder",
-            addPlayer: "Ajouter un joueur",
-            export: "Exporter",
-            delete: "Supprimer",
-            confirmDelete: "Supprimer ce joueur?",
-            settings: "Paramètres",
-            autoCalculate: "Calcul automatique des points",
-            winPoints: "Points pour victoire",
-            drawPoints: "Points pour match nul",
-            lossPoints: "Points pour défaite",
-            apply: "Appliquer les paramètres",
-            addNewPlayer: "Ajouter un nouveau joueur",
-            playerName: "Nom du joueur",
-            cancel: "Annuler",
-          },
-          de: {
-            rank: "Rang",
-            player: "Spieler",
-            wins: "Siege",
-            losses: "Niederlagen",
-            draws: "Unentschieden",
-            points: "Punkte",
-            actions: "Aktionen",
-            save: "Alles speichern",
-            addPlayer: "Spieler hinzufügen",
-            export: "Exportieren",
-            delete: "Löschen",
-            confirmDelete: "Diesen Spieler löschen?",
-            settings: "Einstellungen",
-            autoCalculate: "Punkte automatisch berechnen",
-            winPoints: "Punkte für Sieg",
-            drawPoints: "Punkte für Unentschieden",
-            lossPoints: "Punkte für Niederlage",
-            apply: "Einstellungen übernehmen",
-            addNewPlayer: "Neuen Spieler hinzufügen",
-            playerName: "Spielername",
-            cancel: "Abbrechen",
-          },
-        },
-      };
+      // Global variables
+      let isAdmin = false;
+      let players = [];
+      let matches = [];
+      let editingPlayerId = null;
+      let editingMatchId = null;
 
-      // Load data from localStorage
-      function loadData() {
-        const savedData = localStorage.getItem("mucha-league-data");
-        if (savedData) {
-          league.players = JSON.parse(savedData);
-        }
+      // DOM elements
+      const loginBtn = document.getElementById("loginBtn");
+      const loginForm = document.getElementById("loginForm");
+      const submitLogin = document.getElementById("submitLogin");
+      const adminUsername = document.getElementById("adminUsername");
+      const adminPassword = document.getElementById("adminPassword");
 
-        const savedSettings = localStorage.getItem("mucha-league-settings");
-        if (savedSettings) {
-          league.settings = JSON.parse(savedSettings);
-          applySettingsToUI();
-        }
+      const tabs = document.querySelectorAll(".tab");
+      const tabContents = document.querySelectorAll(".tab-content");
 
-        renderTable();
-      }
+      const leaderboardBody = document.getElementById("leaderboardBody");
+      const matchesBody = document.getElementById("matchesBody");
+      const playersBody = document.getElementById("playersBody");
 
-      // Save data to localStorage
-      function saveData() {
-        updateDataFromTable();
-        localStorage.setItem(
-          "mucha-league-data",
-          JSON.stringify(league.players)
-        );
+      const playersAdminControls = document.getElementById(
+        "playersAdminControls"
+      );
+      const matchesAdminControls = document.getElementById(
+        "matchesAdminControls"
+      );
+      const addPlayerBtn = document.getElementById("addPlayerBtn");
+      const addMatchBtn = document.getElementById("addMatchBtn");
 
-        localStorage.setItem(
-          "mucha-league-settings",
-          JSON.stringify(league.settings)
-        );
+      const playerFormContainer = document.getElementById(
+        "playerFormContainer"
+      );
+      const playerForm = document.getElementById("playerForm");
+      const playerFormTitle = document.getElementById("playerFormTitle");
+      const playerIdInput = document.getElementById("playerId");
+      const playerNameInput = document.getElementById("playerName");
+      const playerTagInput = document.getElementById("playerTag");
+      const playerWinsInput = document.getElementById("playerWins");
+      const playerLossesInput = document.getElementById("playerLosses");
+      const playerPointsInput = document.getElementById("playerPoints");
+      const playerScoreInput = document.getElementById("playerScore");
+      const cancelPlayerBtn = document.getElementById("cancelPlayerBtn");
+      const deckInfo = document.getElementById("deckInfo");
+      const deckContainer = document.getElementById("deckContainer");
 
-        showNotification("Data saved successfully!", "success");
-      }
+      const matchFormContainer = document.getElementById("matchFormContainer");
+      const matchForm = document.getElementById("matchForm");
+      const matchPlayer1Select = document.getElementById("matchPlayer1");
+      const matchPlayer2Select = document.getElementById("matchPlayer2");
+      const matchWinnerSelect = document.getElementById("matchWinner");
+      const matchScoreInput = document.getElementById("matchScore");
+      const matchNoteInput = document.getElementById("matchNote");
+      const cancelMatchBtn = document.getElementById("cancelMatchBtn");
 
-      // Login function
-      function login() {
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+      // Event listeners
+      document.addEventListener("DOMContentLoaded", () => {
+        loadData();
+        setupEventListeners();
+      });
 
-        if (username === "admin" && password === "admin") {
-          document
-            .getElementById("login-section")
-            .classList.add("animate__fadeOut");
-          setTimeout(() => {
-            document.getElementById("login-section").style.display = "none";
-            document.getElementById("dashboard").style.display = "block";
-            document
-              .getElementById("dashboard")
-              .classList.add("animate__fadeIn");
-            loadData();
-          }, 500);
-        } else {
-          showNotification(
-            "Invalid credentials. Use admin/admin for demo.",
-            "danger"
-          );
-        }
-      }
-
-      // Render the editable table
-      function renderTable() {
-        const tableBody = document.getElementById("mucha-players");
-        tableBody.innerHTML = "";
-
-        // Sort players by points (descending)
-        league.players.sort((a, b) => b.points - a.points);
-
-        league.players.forEach((player, index) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td><input type="text" class="editable" value="${escapeHtml(
-                      player.name
-                    )}" data-field="name"></td>
-                    <td><input type="number" class="editable" value="${
-                      player.wins
-                    }" data-field="wins" min="0"></td>
-                    <td><input type="number" class="editable" value="${
-                      player.losses
-                    }" data-field="losses" min="0"></td>
-                    <td><input type="number" class="editable" value="${
-                      player.draws
-                    }" data-field="draws" min="0"></td>
-                    <td><input type="number" class="editable" value="${
-                      player.points
-                    }" data-field="points" min="0" ${
-            league.settings.autoCalculate ? "readonly" : ""
-          }></td>
-                    <td>
-                        <button class="btn btn-danger" onclick="deleteRow(this)">${getTranslation(
-                          "delete"
-                        )}</button>
-                    </td>
-                `;
-          tableBody.appendChild(row);
+      function setupEventListeners() {
+        // Tab switching
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            const tabId = tab.getAttribute("data-tab");
+            switchTab(tabId);
+          });
         });
 
-        // Add event listeners to all editable cells
-        document.querySelectorAll(".editable").forEach((input) => {
-          input.addEventListener("change", function () {
-            if (
-              league.settings.autoCalculate &&
-              this.dataset.field !== "name"
-            ) {
-              calculatePoints(this);
+        // Admin login
+        loginBtn.addEventListener("click", () => {
+          loginForm.classList.toggle("active");
+        });
+
+        submitLogin.addEventListener("click", () => {
+          const username = adminUsername.value;
+          const password = adminPassword.value;
+
+          // Simple admin authentication (in a real app, this would be more secure)
+          if (username === "admin" && password === "admin123") {
+            isAdmin = true;
+            loginForm.classList.remove("active");
+            loginBtn.textContent = "Admin";
+            showAdminControls();
+            showAlert("Přihlášení úspěšné", "success");
+          } else {
+            showAlert("Neplatné přihlašovací údaje", "danger");
+          }
+        });
+
+        // Player management
+        addPlayerBtn.addEventListener("click", () => {
+          editingPlayerId = null;
+          playerFormTitle.textContent = "Přidat nového hráče";
+          playerForm.reset();
+          deckInfo.style.display = "none";
+          playerFormContainer.style.display = "block";
+        });
+
+        cancelPlayerBtn.addEventListener("click", () => {
+          playerFormContainer.style.display = "none";
+        });
+
+        playerForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          savePlayer();
+        });
+
+        // Match management
+        addMatchBtn.addEventListener("click", () => {
+          editingMatchId = null;
+          populatePlayerSelects();
+          matchForm.reset();
+          matchFormContainer.style.display = "block";
+        });
+
+        cancelMatchBtn.addEventListener("click", () => {
+          matchFormContainer.style.display = "none";
+        });
+
+        matchForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          saveMatch();
+        });
+
+        // Update match winner options when players change
+        matchPlayer1Select.addEventListener("change", updateMatchWinnerOptions);
+        matchPlayer2Select.addEventListener("change", updateMatchWinnerOptions);
+      }
+
+      function switchTab(tabId) {
+        // Update active tab
+        tabs.forEach((tab) => {
+          if (tab.getAttribute("data-tab") === tabId) {
+            tab.classList.add("active");
+          } else {
+            tab.classList.remove("active");
+          }
+        });
+
+        // Update active tab content
+        tabContents.forEach((content) => {
+          if (content.id === tabId) {
+            content.classList.add("active");
+          } else {
+            content.classList.remove("active");
+          }
+        });
+
+        // Refresh data if needed
+        if (tabId === "leaderboard") {
+          renderLeaderboard();
+        } else if (tabId === "matches") {
+          renderMatches();
+        } else if (tabId === "players") {
+          renderPlayers();
+        }
+      }
+
+      function showAdminControls() {
+        if (isAdmin) {
+          playersAdminControls.style.display = "block";
+          matchesAdminControls.style.display = "block";
+
+          // Add edit buttons to player rows
+          const playerRows = document.querySelectorAll("#playersBody tr");
+          playerRows.forEach((row) => {
+            const playerId = row.getAttribute("data-id");
+            const editBtn = document.createElement("button");
+            editBtn.className = "btn btn-secondary";
+            editBtn.textContent = "Upravit";
+            editBtn.style.marginRight = "5px";
+            editBtn.addEventListener("click", () => editPlayer(playerId));
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "btn btn-secondary";
+            deleteBtn.textContent = "Smazat";
+            deleteBtn.addEventListener("click", () => deletePlayer(playerId));
+
+            const actionsCell = row.querySelector(".actions");
+            if (actionsCell) {
+              actionsCell.innerHTML = "";
+              actionsCell.appendChild(editBtn);
+              actionsCell.appendChild(deleteBtn);
             }
-            updateDataFromTable();
-            renderTable(); // Re-render to update ranks
-          });
-        });
-
-        // Update point labels in tooltips
-        document.getElementById("win-points-label").textContent =
-          league.settings.pointSystem.win;
-        document.getElementById("loss-points-label").textContent =
-          league.settings.pointSystem.loss;
-        document.getElementById("draw-points-label").textContent =
-          league.settings.pointSystem.draw;
-      }
-
-      // Calculate points based on wins/draws
-      function calculatePoints(inputElement) {
-        if (!league.settings.autoCalculate) return;
-
-        const row = inputElement.closest("tr");
-        const wins =
-          parseInt(row.querySelector('[data-field="wins"]').value) || 0;
-        const losses =
-          parseInt(row.querySelector('[data-field="losses"]').value) || 0;
-        const draws =
-          parseInt(row.querySelector('[data-field="draws"]').value) || 0;
-
-        const points =
-          wins * league.settings.pointSystem.win +
-          draws * league.settings.pointSystem.draw +
-          losses * league.settings.pointSystem.loss;
-
-        row.querySelector('[data-field="points"]').value = points;
-      }
-
-      // Add new player from modal
-      function addPlayerFromModal() {
-        const name = document.getElementById("new-player-name").value.trim();
-        const wins =
-          parseInt(document.getElementById("new-player-wins").value) || 0;
-        const losses =
-          parseInt(document.getElementById("new-player-losses").value) || 0;
-        const draws =
-          parseInt(document.getElementById("new-player-draws").value) || 0;
-
-        if (!name) {
-          showNotification("Please enter a player name", "danger");
-          return;
-        }
-
-        const points = league.settings.autoCalculate
-          ? wins * league.settings.pointSystem.win +
-            draws * league.settings.pointSystem.draw +
-            losses * league.settings.pointSystem.loss
-          : 0;
-
-        const newPlayer = {
-          id:
-            league.players.length > 0
-              ? Math.max(...league.players.map((p) => p.id)) + 1
-              : 1,
-          name: name,
-          wins: wins,
-          losses: losses,
-          draws: draws,
-          points: points,
-        };
-
-        league.players.push(newPlayer);
-        closeModal("add-player-modal");
-        renderTable();
-        showNotification("Player added successfully!", "success");
-      }
-
-      // Delete row
-      function deleteRow(button) {
-        if (confirm(getTranslation("confirmDelete"))) {
-          const row = button.closest("tr");
-          const rowIndex = Array.from(row.parentNode.children).indexOf(row);
-          league.players.splice(rowIndex, 1);
-          renderTable();
-          showNotification("Player deleted", "info");
-        }
-      }
-
-      // Update league data from table
-      function updateDataFromTable() {
-        const rows = document.querySelectorAll("#mucha-players tr");
-        const players = [];
-
-        rows.forEach((row) => {
-          players.push({
-            name: row.querySelector('[data-field="name"]').value,
-            wins: parseInt(row.querySelector('[data-field="wins"]').value) || 0,
-            losses:
-              parseInt(row.querySelector('[data-field="losses"]').value) || 0,
-            draws:
-              parseInt(row.querySelector('[data-field="draws"]').value) || 0,
-            points:
-              parseInt(row.querySelector('[data-field="points"]').value) || 0,
-          });
-        });
-
-        league.players = players;
-      }
-
-      // Toggle settings panel
-      function toggleSettings() {
-        const settingsContent = document.getElementById("settings-content");
-        const arrow = document.getElementById("settings-arrow");
-
-        settingsContent.classList.toggle("active");
-        arrow.textContent = settingsContent.classList.contains("active")
-          ? "▲"
-          : "▼";
-      }
-
-      // Apply settings from UI
-      function applySettings() {
-        league.settings.pointSystem.win =
-          parseInt(document.getElementById("win-points").value) || 0;
-        league.settings.pointSystem.draw =
-          parseInt(document.getElementById("draw-points").value) || 0;
-        league.settings.pointSystem.loss =
-          parseInt(document.getElementById("loss-points").value) || 0;
-        league.settings.autoCalculate =
-          document.getElementById("auto-calculate").checked;
-        league.settings.language =
-          document.getElementById("language-select").value;
-
-        if (league.settings.autoCalculate) {
-          // Recalculate all points
-          league.players.forEach((player) => {
-            player.points =
-              player.wins * league.settings.pointSystem.win +
-              player.draws * league.settings.pointSystem.draw +
-              player.losses * league.settings.pointSystem.loss;
           });
         }
-
-        saveData();
-        renderTable();
-        translateUI();
-        showNotification("Settings applied successfully!", "success");
       }
 
-      // Apply saved settings to UI
-      function applySettingsToUI() {
-        document.getElementById("win-points").value =
-          league.settings.pointSystem.win;
-        document.getElementById("draw-points").value =
-          league.settings.pointSystem.draw;
-        document.getElementById("loss-points").value =
-          league.settings.pointSystem.loss;
-        document.getElementById("auto-calculate").checked =
-          league.settings.autoCalculate;
-        document.getElementById("language-select").value =
-          league.settings.language;
-      }
+      function showAlert(message, type) {
+        const alert = document.createElement("div");
+        alert.className = `alert alert-${type}`;
+        alert.textContent = message;
 
-      // Show add player modal
-      function showAddPlayerModal() {
-        document.getElementById("new-player-name").value = "";
-        document.getElementById("new-player-wins").value = "0";
-        document.getElementById("new-player-losses").value = "0";
-        document.getElementById("new-player-draws").value = "0";
-        document.getElementById("add-player-modal").style.display = "block";
-      }
-
-      // Close modal
-      function closeModal(modalId) {
-        document.getElementById(modalId).style.display = "none";
-      }
-
-      // Export to Excel-like format
-      function exportToExcel() {
-        let csv = "Rank,Player,Wins,Losses,Draws,Points\n";
-
-        league.players.forEach((player, index) => {
-          csv += `${index + 1},"${player.name}",${player.wins},${
-            player.losses
-          },${player.draws},${player.points}\n`;
-        });
-
-        const blob = new Blob([csv], { type: "text/csv" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.setAttribute("hidden", "");
-        a.setAttribute("href", url);
-        a.setAttribute("download", "mucha_league_standings.csv");
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-
-        showNotification("Data exported to CSV", "success");
-      }
-
-      // Show notification
-      function showNotification(message, type) {
-        const notification = document.createElement("div");
-        notification.className = `notification animate__animated animate__fadeInDown ${type}`;
-        notification.textContent = message;
-        notification.style.position = "fixed";
-        notification.style.top = "20px";
-        notification.style.right = "20px";
-        notification.style.padding = "15px";
-        notification.style.borderRadius = "5px";
-        notification.style.color = "white";
-        notification.style.zIndex = "1000";
-        notification.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
-
-        if (type === "success") {
-          notification.style.background = "var(--success)";
-        } else if (type === "danger") {
-          notification.style.background = "var(--danger)";
-        } else if (type === "info") {
-          notification.style.background = "var(--info)";
-        }
-
-        document.body.appendChild(notification);
+        document.querySelector(".container").prepend(alert);
 
         setTimeout(() => {
-          notification.classList.remove("animate__fadeInDown");
-          notification.classList.add("animate__fadeOutUp");
-          setTimeout(() => {
-            document.body.removeChild(notification);
-          }, 500);
+          alert.remove();
         }, 3000);
       }
 
-      // Translate UI elements
-      function translateUI() {
-        const lang = league.settings.language;
-        const t = league.translations[lang];
-
-        // Table headers
-        document.querySelectorAll("th")[0].textContent = t.rank;
-        document.querySelectorAll("th")[1].textContent = t.player;
-        document.querySelectorAll("th")[2].textContent = t.wins;
-        document.querySelectorAll("th")[3].textContent = t.losses;
-        document.querySelectorAll("th")[4].textContent = t.draws;
-        document.querySelectorAll("th")[5].textContent = t.points;
-        document.querySelectorAll("th")[6].textContent = t.actions;
-
-        // Buttons
-        document.querySelector(
-          ".btn-success"
-        ).innerHTML = `<i class="fas fa-save"></i> ${t.save}`;
-        document.querySelector(
-          ".btn-info"
-        ).innerHTML = `<i class="fas fa-plus"></i> ${t.addPlayer}`;
-        document.querySelector(
-          ".btn-secondary"
-        ).innerHTML = `<i class="fas fa-file-export"></i> ${t.export}`;
-
-        // Settings
-        document.querySelector(
-          ".settings-header h3"
-        ).innerHTML = `<i class="fas fa-cog"></i> ${t.settings}`;
-        document.querySelector(".toggle-label").textContent = t.autoCalculate;
-        document.querySelector(".btn-primary").textContent = t.apply;
-
-        // Modal
-        document.querySelector(".modal-title").textContent = t.addNewPlayer;
-        document.querySelector("#new-player-name").placeholder = t.playerName;
-        document.querySelector(".btn-success").textContent = t.addPlayer;
+      // Data management
+      function loadData() {
+        // Try to load from data.json first
+        fetch("data.json")
+          .then((response) => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+          })
+          .then((data) => {
+            players = data.players || [];
+            matches = data.matches || [];
+            renderAll();
+          })
+          .catch((error) => {
+            console.log("Error loading data.json, trying localStorage:", error);
+            // Fallback to localStorage
+            const savedData = localStorage.getItem("clashRoyaleTournamentData");
+            if (savedData) {
+              const data = JSON.parse(savedData);
+              players = data.players || [];
+              matches = data.matches || [];
+            } else {
+              // Initialize with empty arrays if no data found
+              players = [];
+              matches = [];
+            }
+            renderAll();
+          });
       }
 
-      // Get translation
-      function getTranslation(key) {
-        return league.translations[league.settings.language][key] || key;
+      function saveData() {
+        const data = {
+          players,
+          matches,
+        };
+
+        // Save to localStorage as fallback
+        localStorage.setItem("clashRoyaleTournamentData", JSON.stringify(data));
+
+        // In a real app, you would send this to a server to save to data.json
+        // For this demo, we'll just log it
+        console.log("Data to be saved:", data);
       }
 
-      // Escape HTML to prevent XSS
-      function escapeHtml(unsafe) {
-        return unsafe
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
+      function renderAll() {
+        renderLeaderboard();
+        renderMatches();
+        renderPlayers();
       }
 
-      // Initialize
-      document.addEventListener("DOMContentLoaded", () => {
-        // Add event listener for Enter key in inputs
-        document.addEventListener("keypress", function (e) {
-          if (e.key === "Enter") {
-            e.target.blur(); // Triggers the change event
-          }
+      function renderLeaderboard() {
+        // Sort players by points (descending)
+        const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
+
+        leaderboardBody.innerHTML = "";
+
+        sortedPlayers.forEach((player, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><a href="https://royaleapi.com/player/${player.tag.replace(
+                      "#",
+                      ""
+                    )}" class="player-link" target="_blank">${
+            player.name
+          }</a></td>
+                    <td>${player.tag}</td>
+                    <td>${player.wins}</td>
+                    <td>${player.losses}</td>
+                    <td>${player.points}</td>
+                    <td>${player.score}</td>
+                `;
+          leaderboardBody.appendChild(row);
+        });
+      }
+
+      function renderMatches() {
+        matchesBody.innerHTML = "";
+
+        matches.forEach((match) => {
+          const player1 = players.find((p) => p.id === match.player1Id);
+          const player2 = players.find((p) => p.id === match.player2Id);
+
+          if (!player1 || !player2) return;
+
+          const winner = match.winner === "1" ? player1.name : player2.name;
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${new Date(match.date).toLocaleDateString()}</td>
+                    <td>${player1.name}</td>
+                    <td>${player2.name}</td>
+                    <td>${winner}</td>
+                    <td>${match.score}</td>
+                    <td>${match.note || ""}</td>
+                `;
+          matchesBody.appendChild(row);
+        });
+      }
+
+      function renderPlayers() {
+        playersBody.innerHTML = "";
+
+        players.forEach((player) => {
+          const row = document.createElement("tr");
+          row.setAttribute("data-id", player.id);
+          row.innerHTML = `
+                    <td>${player.name}</td>
+                    <td>${player.tag}</td>
+                    <td>${player.wins}</td>
+                    <td>${player.losses}</td>
+                    <td>${player.points}</td>
+                    <td>${player.score}</td>
+                    <td class="actions"></td>
+                `;
+          playersBody.appendChild(row);
         });
 
-        // Close modal when clicking outside
-        window.addEventListener("click", function (event) {
-          if (event.target.classList.contains("modal")) {
-            event.target.style.display = "none";
-          }
+        if (isAdmin) {
+          showAdminControls();
+        }
+      }
+
+      function populatePlayerSelects() {
+        matchPlayer1Select.innerHTML = "";
+        matchPlayer2Select.innerHTML = "";
+
+        players.forEach((player) => {
+          const option1 = document.createElement("option");
+          option1.value = player.id;
+          option1.textContent = player.name;
+          matchPlayer1Select.appendChild(option1);
+
+          const option2 = document.createElement("option");
+          option2.value = player.id;
+          option2.textContent = player.name;
+          matchPlayer2Select.appendChild(option2);
         });
-      });
+      }
+
+      function updateMatchWinnerOptions() {
+        const player1Id = matchPlayer1Select.value;
+        const player2Id = matchPlayer2Select.value;
+
+        if (!player1Id || !player2Id) return;
+
+        const player1 = players.find((p) => p.id === player1Id);
+        const player2 = players.find((p) => p.id === player2Id);
+
+        matchWinnerSelect.innerHTML = `
+                <option value="">Vyberte vítěze</option>
+                <option value="1">${player1.name}</option>
+                <option value="2">${player2.name}</option>
+            `;
+      }
+
+      // Player CRUD operations
+      function savePlayer() {
+        const playerData = {
+          name: playerNameInput.value,
+          tag: playerTagInput.value,
+          wins: parseInt(playerWinsInput.value) || 0,
+          losses: parseInt(playerLossesInput.value) || 0,
+          points: parseInt(playerPointsInput.value) || 0,
+          score: playerScoreInput.value || "0-0",
+        };
+
+        if (editingPlayerId) {
+          // Update existing player
+          const index = players.findIndex((p) => p.id === editingPlayerId);
+          if (index !== -1) {
+            players[index] = { ...players[index], ...playerData };
+            showAlert("Hráč byl úspěšně aktualizován", "success");
+          }
+        } else {
+          // Add new player
+          const newPlayer = {
+            id: Date.now().toString(),
+            ...playerData,
+          };
+          players.push(newPlayer);
+          showAlert("Hráč byl úspěšně přidán", "success");
+
+          // Try to fetch deck for new player
+          fetchDeck(newPlayer.tag);
+        }
+
+        saveData();
+        renderAll();
+        playerFormContainer.style.display = "none";
+      }
+
+      function editPlayer(playerId) {
+        const player = players.find((p) => p.id === playerId);
+        if (!player) return;
+
+        editingPlayerId = playerId;
+        playerFormTitle.textContent = "Upravit hráče";
+        playerIdInput.value = playerId;
+        playerNameInput.value = player.name;
+        playerTagInput.value = player.tag;
+        playerWinsInput.value = player.wins;
+        playerLossesInput.value = player.losses;
+        playerPointsInput.value = player.points;
+        playerScoreInput.value = player.score;
+
+        // Show deck if available
+        if (player.deck) {
+          deckInfo.style.display = "block";
+          renderDeck(player.deck);
+        } else {
+          deckInfo.style.display = "none";
+          // Try to fetch deck
+          fetchDeck(player.tag);
+        }
+
+        playerFormContainer.style.display = "block";
+      }
+
+      function deletePlayer(playerId) {
+        if (confirm("Opravdu chcete smazat tohoto hráče?")) {
+          players = players.filter((p) => p.id !== playerId);
+          // Also remove any matches involving this player
+          matches = matches.filter(
+            (m) => m.player1Id !== playerId && m.player2Id !== playerId
+          );
+
+          saveData();
+          renderAll();
+          showAlert("Hráč byl úspěšně smazán", "success");
+        }
+      }
+
+      function fetchDeck(playerTag) {
+        // In a real app, you would call the Clash Royale API here
+        // This is a mock implementation for demonstration
+        console.log(`Fetching deck for player ${playerTag}`);
+
+        // Simulate API call delay
+        setTimeout(() => {
+          // Mock deck data
+          const mockDecks = [
+            [
+              "Golem",
+              "Night Witch",
+              "Baby Dragon",
+              "Tornado",
+              "Poison",
+              "Mega Minion",
+              "Lumberjack",
+              "Dark Prince",
+            ],
+            [
+              "P.E.K.K.A",
+              "Battle Ram",
+              "Royal Ghost",
+              "Poison",
+              "Electro Wizard",
+              "Zap",
+              "Bandit",
+              "Dark Prince",
+            ],
+            [
+              "Hog Rider",
+              "Musketeer",
+              "Valkyrie",
+              "Fireball",
+              "Cannon",
+              "Ice Spirit",
+              "Skeletons",
+              "Log",
+            ],
+            [
+              "X-Bow",
+              "Tesla",
+              "Archers",
+              "Knight",
+              "Ice Spirit",
+              "Fireball",
+              "Log",
+              "Skeletons",
+            ],
+          ];
+
+          const randomDeck =
+            mockDecks[Math.floor(Math.random() * mockDecks.length)];
+
+          // Update player with deck
+          const playerIndex = players.findIndex((p) => p.tag === playerTag);
+          if (playerIndex !== -1) {
+            players[playerIndex].deck = randomDeck;
+
+            // If we're currently editing this player, update the UI
+            if (editingPlayerId === players[playerIndex].id) {
+              deckInfo.style.display = "block";
+              renderDeck(randomDeck);
+            }
+
+            saveData();
+          }
+        }, 1000);
+      }
+
+      function renderDeck(deckCards) {
+        deckContainer.innerHTML = "";
+
+        deckCards.forEach((cardName) => {
+          const cardElement = document.createElement("div");
+          cardElement.className = "deck-card";
+          cardElement.textContent = cardName;
+          deckContainer.appendChild(cardElement);
+        });
+      }
+
+      // Match CRUD operations
+      function saveMatch() {
+        const player1Id = matchPlayer1Select.value;
+        const player2Id = matchPlayer2Select.value;
+
+        if (player1Id === player2Id) {
+          showAlert("Hráč 1 a hráč 2 nemohou být stejní", "danger");
+          return;
+        }
+
+        const matchData = {
+          player1Id,
+          player2Id,
+          winner: matchWinnerSelect.value,
+          score: matchScoreInput.value,
+          note: matchNoteInput.value,
+          date: new Date().toISOString(),
+        };
+
+        if (editingMatchId) {
+          // Update existing match
+          const index = matches.findIndex((m) => m.id === editingMatchId);
+          if (index !== -1) {
+            matches[index] = { ...matches[index], ...matchData };
+            showAlert("Zápas byl úspěšně aktualizován", "success");
+          }
+        } else {
+          // Add new match
+          const newMatch = {
+            id: Date.now().toString(),
+            ...matchData,
+          };
+          matches.push(newMatch);
+          showAlert("Zápas byl úspěšně přidán", "success");
+
+          // Update player stats based on match result
+          updatePlayerStats(newMatch);
+        }
+
+        saveData();
+        renderAll();
+        matchFormContainer.style.display = "none";
+      }
+
+      function updatePlayerStats(match) {
+        const player1 = players.find((p) => p.id === match.player1Id);
+        const player2 = players.find((p) => p.id === match.player2Id);
+
+        if (!player1 || !player2) return;
+
+        const [score1, score2] = match.score.split("-").map(Number);
+
+        if (match.winner === "1") {
+          // Player 1 won
+          player1.wins += 1;
+          player2.losses += 1;
+          player1.points += 3;
+        } else {
+          // Player 2 won
+          player2.wins += 1;
+          player1.losses += 1;
+          player2.points += 3;
+        }
+
+        // Update scores
+        player1.score = updateScore(player1.score, score1, score2);
+        player2.score = updateScore(player2.score, score2, score1);
+      }
+
+      function updateScore(currentScore, newScoreFor, newScoreAgainst) {
+        const [currentFor, currentAgainst] = currentScore
+          .split("-")
+          .map(Number);
+        const totalFor = (currentFor || 0) + newScoreFor;
+        const totalAgainst = (currentAgainst || 0) + newScoreAgainst;
+        return `${totalFor}-${totalAgainst}`;
+      }
     </script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    />
   </body>
 </html>
-

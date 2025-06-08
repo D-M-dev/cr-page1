@@ -228,33 +228,6 @@
         border: 1px solid #f5c6cb;
       }
 
-      .deck-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-        margin-top: 10px;
-      }
-
-      .deck-card {
-        width: 60px;
-        height: 80px;
-        background-color: var(--light-color);
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10px;
-        text-align: center;
-        word-break: break-word;
-        padding: 5px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      }
-
-      .deck-card img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-
       .rules-container {
         padding: 20px;
         background-color: var(--light-color);
@@ -452,12 +425,6 @@
               <label for="playerScore">Skóre</label>
               <input type="text" id="playerScore" value="0-0" />
             </div>
-            <div id="deckInfo" style="display: none; margin-bottom: 15px">
-              <h4>Deck hráče</h4>
-              <div class="deck-container" id="deckContainer">
-                <!-- Deck cards will be loaded here -->
-              </div>
-            </div>
             <button type="submit" class="btn">Uložit</button>
             <button
               type="button"
@@ -551,8 +518,6 @@
       const playerPointsInput = document.getElementById("playerPoints");
       const playerScoreInput = document.getElementById("playerScore");
       const cancelPlayerBtn = document.getElementById("cancelPlayerBtn");
-      const deckInfo = document.getElementById("deckInfo");
-      const deckContainer = document.getElementById("deckContainer");
 
       const matchFormContainer = document.getElementById("matchFormContainer");
       const matchForm = document.getElementById("matchForm");
@@ -587,16 +552,8 @@
           const username = adminUsername.value;
           const password = adminPassword.value;
 
-          // Simple admin authentication (in a real app, this would be more secure)
-          if (username === "admin" && password === "admin123") {
-            isAdmin = true;
-            loginForm.classList.remove("active");
-            loginBtn.textContent = "Admin";
-            showAdminControls();
-            showAlert("Přihlášení úspěšné", "success");
-          } else {
-            showAlert("Neplatné přihlašovací údaje", "danger");
-          }
+          // Authenticate via PHP
+          authenticateAdmin(username, password);
         });
 
         // Player management
@@ -604,7 +561,6 @@
           editingPlayerId = null;
           playerFormTitle.textContent = "Přidat nového hráče";
           playerForm.reset();
-          deckInfo.style.display = "none";
           playerFormContainer.style.display = "block";
         });
 
@@ -637,6 +593,34 @@
         // Update match winner options when players change
         matchPlayer1Select.addEventListener("change", updateMatchWinnerOptions);
         matchPlayer2Select.addEventListener("change", updateMatchWinnerOptions);
+      }
+
+      function authenticateAdmin(username, password) {
+        fetch("admin_auth.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `username=${encodeURIComponent(
+            username
+          )}&password=${encodeURIComponent(password)}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              isAdmin = true;
+              loginForm.classList.remove("active");
+              loginBtn.textContent = "Admin";
+              showAdminControls();
+              showAlert("Přihlášení úspěšné", "success");
+            } else {
+              showAlert("Neplatné přihlašovací údaje", "danger");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            showAlert("Chyba při přihlašování", "danger");
+          });
       }
 
       function switchTab(tabId) {
@@ -712,46 +696,44 @@
 
       // Data management
       function loadData() {
-        // Try to load from data.json first
-        fetch("data.json")
-          .then((response) => {
-            if (!response.ok) throw new Error("Network response was not ok");
-            return response.json();
-          })
+        fetch("get_data.php")
+          .then((response) => response.json())
           .then((data) => {
             players = data.players || [];
             matches = data.matches || [];
             renderAll();
           })
           .catch((error) => {
-            console.log("Error loading data.json, trying localStorage:", error);
-            // Fallback to localStorage
-            const savedData = localStorage.getItem("clashRoyaleTournamentData");
-            if (savedData) {
-              const data = JSON.parse(savedData);
-              players = data.players || [];
-              matches = data.matches || [];
-            } else {
-              // Initialize with empty arrays if no data found
-              players = [];
-              matches = [];
-            }
+            console.error("Error loading data:", error);
+            // Fallback to empty data
+            players = [];
+            matches = [];
             renderAll();
           });
       }
 
-      function saveData() {
+      function saveDataToServer() {
         const data = {
           players,
           matches,
         };
 
-        // Save to localStorage as fallback
-        localStorage.setItem("clashRoyaleTournamentData", JSON.stringify(data));
-
-        // In a real app, you would send this to a server to save to data.json
-        // For this demo, we'll just log it
-        console.log("Data to be saved:", data);
+        fetch("save_data.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (!data.success) {
+              console.error("Error saving data:", data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
       }
 
       function renderAll() {
@@ -892,12 +874,9 @@
           };
           players.push(newPlayer);
           showAlert("Hráč byl úspěšně přidán", "success");
-
-          // Try to fetch deck for new player
-          fetchDeck(newPlayer.tag);
         }
 
-        saveData();
+        saveDataToServer();
         renderAll();
         playerFormContainer.style.display = "none";
       }
@@ -916,16 +895,6 @@
         playerPointsInput.value = player.points;
         playerScoreInput.value = player.score;
 
-        // Show deck if available
-        if (player.deck) {
-          deckInfo.style.display = "block";
-          renderDeck(player.deck);
-        } else {
-          deckInfo.style.display = "none";
-          // Try to fetch deck
-          fetchDeck(player.tag);
-        }
-
         playerFormContainer.style.display = "block";
       }
 
@@ -937,91 +906,10 @@
             (m) => m.player1Id !== playerId && m.player2Id !== playerId
           );
 
-          saveData();
+          saveDataToServer();
           renderAll();
           showAlert("Hráč byl úspěšně smazán", "success");
         }
-      }
-
-      function fetchDeck(playerTag) {
-        // In a real app, you would call the Clash Royale API here
-        // This is a mock implementation for demonstration
-        console.log(`Fetching deck for player ${playerTag}`);
-
-        // Simulate API call delay
-        setTimeout(() => {
-          // Mock deck data
-          const mockDecks = [
-            [
-              "Golem",
-              "Night Witch",
-              "Baby Dragon",
-              "Tornado",
-              "Poison",
-              "Mega Minion",
-              "Lumberjack",
-              "Dark Prince",
-            ],
-            [
-              "P.E.K.K.A",
-              "Battle Ram",
-              "Royal Ghost",
-              "Poison",
-              "Electro Wizard",
-              "Zap",
-              "Bandit",
-              "Dark Prince",
-            ],
-            [
-              "Hog Rider",
-              "Musketeer",
-              "Valkyrie",
-              "Fireball",
-              "Cannon",
-              "Ice Spirit",
-              "Skeletons",
-              "Log",
-            ],
-            [
-              "X-Bow",
-              "Tesla",
-              "Archers",
-              "Knight",
-              "Ice Spirit",
-              "Fireball",
-              "Log",
-              "Skeletons",
-            ],
-          ];
-
-          const randomDeck =
-            mockDecks[Math.floor(Math.random() * mockDecks.length)];
-
-          // Update player with deck
-          const playerIndex = players.findIndex((p) => p.tag === playerTag);
-          if (playerIndex !== -1) {
-            players[playerIndex].deck = randomDeck;
-
-            // If we're currently editing this player, update the UI
-            if (editingPlayerId === players[playerIndex].id) {
-              deckInfo.style.display = "block";
-              renderDeck(randomDeck);
-            }
-
-            saveData();
-          }
-        }, 1000);
-      }
-
-      function renderDeck(deckCards) {
-        deckContainer.innerHTML = "";
-
-        deckCards.forEach((cardName) => {
-          const cardElement = document.createElement("div");
-          cardElement.className = "deck-card";
-          cardElement.textContent = cardName;
-          deckContainer.appendChild(cardElement);
-        });
       }
 
       // Match CRUD operations
@@ -1063,7 +951,7 @@
           updatePlayerStats(newMatch);
         }
 
-        saveData();
+        saveDataToServer();
         renderAll();
         matchFormContainer.style.display = "none";
       }
@@ -1104,3 +992,4 @@
     </script>
   </body>
 </html>
+

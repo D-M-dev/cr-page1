@@ -1,8 +1,41 @@
 {
-  "players": [],
-  "matches": [],
-  "settings": {
-    "tournamentName": "Clash Royale Turnaj - 4 Veteráni",
-    "lastUpdated": ""
+  "players": {
+    "-Nabc123": {
+      "tag": "ABC123",
+      "name": "Player One",
+      "wins": 5,
+      "losses": 2,
+      "matches": 7,
+      "points": 15
+    },
+    "-Ndef456": {
+      "tag": "DEF456",
+      "name": "Player Two",
+      "wins": 3,
+      "losses": 4,
+      "matches": 7,
+      "points": 9
+    }
+  },
+  "matches": {
+    "-Nghi789": {
+      "player1": {
+        "id": "-Nabc123",
+        "name": "Player One",
+        "tag": "ABC123",
+        "score": 3,
+        "points": 3
+      },
+      "player2": {
+        "id": "-Ndef456",
+        "name": "Player Two",
+        "tag": "DEF456",
+        "score": 1,
+        "points": 0
+      },
+      "winner": "player1",
+      "note": "Great match!",
+      "timestamp": "2023-06-15T14:30:00Z"
+    }
   }
 }

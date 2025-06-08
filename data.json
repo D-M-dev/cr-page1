@@ -1,4 +1,8 @@
 {
   "players": [],
-  "matches": []
+  "matches": [],
+  "settings": {
+    "tournamentName": "Clash Royale Turnaj - 4 Veteráni",
+    "lastUpdated": ""
+  }
 }

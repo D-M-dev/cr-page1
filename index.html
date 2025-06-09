@@ -1,36 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Clash Royale Tournament</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <title>Clash Royale Liga</title>
     <style>
-      :root {
-        --primary-color: #ff7b00;
-        --secondary-color: #f5f5f5;
-        --text-color: #333;
-        --light-text: #777;
-        --border-color: #ddd;
-      }
-
       * {
-        box-sizing: border-box;
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
       }
 
       body {
-        font-family: "Roboto", sans-serif;
-        color: var(--text-color);
-        background-color: white;
-        line-height: 1.6;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        color: #333;
+        overflow-x: hidden;
       }
 
       .container {
@@ -39,909 +24,1171 @@
         padding: 0 20px;
       }
 
-      header {
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        padding: 15px 0;
+      /* Header */
+      .header {
+        background: white;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         position: sticky;
         top: 0;
-        z-index: 100;
+        z-index: 1000;
       }
 
-      .header-content {
+      .nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 1rem 2rem;
       }
 
       .logo {
-        font-size: 24px;
-        font-weight: 700;
-        color: var(--primary-color);
+        font-size: 2rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #ff6b35, #f7931e);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
-      .auth-section {
+      .login-frame {
+        background: white;
+        border: 2px solid #ff6b35;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 8px 25px rgba(255, 107, 53, 0.2);
+      }
+
+      .login-form input {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .login-btn {
+        background: linear-gradient(45deg, #ff6b35, #f7931e);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: transform 0.3s ease;
+      }
+
+      .login-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      /* Main Content */
+      .main-content {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 30px;
+        padding: 30px 0;
+        min-height: 80vh;
+      }
+
+      .sidebar {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        height: fit-content;
+        position: sticky;
+        top: 120px;
+      }
+
+      .menu-item {
         display: flex;
         align-items: center;
-      }
-
-      .auth-section input {
-        padding: 8px 12px;
-        border: 1px solid var(--border-color);
-        border-radius: 4px;
-        margin-right: 10px;
-      }
-
-      .auth-section button {
-        padding: 8px 15px;
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-
-      .auth-section button:hover {
-        background-color: #e67300;
-      }
-
-      .admin-panel {
-        display: none;
-        background-color: var(--secondary-color);
         padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
-        border-left: 4px solid var(--primary-color);
+        margin: 5px 0;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
       }
 
-      .admin-panel h3 {
-        margin-bottom: 15px;
-        color: var(--primary-color);
-      }
-
-      .admin-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-      }
-
-      .admin-section {
-        flex: 1;
-        min-width: 300px;
-      }
-
-      .admin-section h4 {
-        margin-bottom: 10px;
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 5px;
-      }
-
-      .form-group {
-        margin-bottom: 10px;
-      }
-
-      .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: 500;
-      }
-
-      .form-group input,
-      .form-group select {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid var(--border-color);
-        border-radius: 4px;
-      }
-
-      .form-group button {
-        padding: 8px 15px;
-        background-color: var(--primary-color);
+      .menu-item:hover,
+      .menu-item.active {
+        background: linear-gradient(45deg, #ff6b35, #f7931e);
         color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+        transform: translateX(10px);
       }
 
-      .form-group button:hover {
-        background-color: #e67300;
+      .menu-icon {
+        margin-right: 10px;
+        font-size: 1.2rem;
       }
 
-      .tabs {
-        display: flex;
-        border-bottom: 1px solid var(--border-color);
-        margin: 20px 0;
+      .content-area {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        min-height: 600px;
       }
 
-      .tab {
-        padding: 10px 20px;
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        transition: all 0.3s;
-      }
-
-      .tab.active {
-        border-bottom: 2px solid var(--primary-color);
-        color: var(--primary-color);
-        font-weight: 500;
-      }
-
-      .tab:hover:not(.active) {
-        background-color: var(--secondary-color);
-      }
-
-      .tab-content {
+      .section {
         display: none;
+        animation: fadeIn 0.5s ease-in-out;
       }
 
-      .tab-content.active {
+      .section.active {
         display: block;
       }
 
-      table {
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Welcome Section */
+      .welcome-section {
+        text-align: center;
+        padding: 60px 20px;
+      }
+
+      .welcome-title {
+        font-size: 3rem;
+        background: linear-gradient(45deg, #ff6b35, #f7931e);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 20px;
+        animation: bounceIn 1s ease-out;
+      }
+
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0.3);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        70% {
+          transform: scale(0.9);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .welcome-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 30px;
+      }
+
+      /* 3D Robot */
+      .robot-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1001;
+        cursor: pointer;
+      }
+
+      .robot {
+        width: 80px;
+        height: 100px;
+        position: relative;
+        animation: robotWalk 2s infinite ease-in-out;
+      }
+
+      .robot-head {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(45deg, #4a90e2, #357abd);
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+      }
+
+      .robot-eyes {
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+      }
+
+      .robot-eye {
+        width: 6px;
+        height: 6px;
+        background: #fff;
+        border-radius: 50%;
+        animation: robotBlink 3s infinite;
+      }
+
+      .robot-body {
+        width: 50px;
+        height: 40px;
+        background: linear-gradient(45deg, #5a9bd4, #4a90e2);
+        border-radius: 10px;
+        position: absolute;
+        top: 35px;
+        left: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+      }
+
+      .robot-arms {
+        position: absolute;
+        top: 40px;
+        width: 100%;
+      }
+
+      .robot-arm {
+        width: 15px;
+        height: 25px;
+        background: linear-gradient(45deg, #4a90e2, #357abd);
+        border-radius: 8px;
+        position: absolute;
+      }
+
+      .robot-arm.left {
+        left: 0;
+        animation: robotArmLeft 2s infinite ease-in-out;
+      }
+
+      .robot-arm.right {
+        right: 0;
+        animation: robotArmRight 2s infinite ease-in-out;
+      }
+
+      .robot-legs {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .robot-leg {
+        width: 12px;
+        height: 20px;
+        background: linear-gradient(45deg, #4a90e2, #357abd);
+        border-radius: 6px;
+        position: absolute;
+      }
+
+      .robot-leg.left {
+        left: 15px;
+        animation: robotLegLeft 1s infinite ease-in-out;
+      }
+
+      .robot-leg.right {
+        right: 15px;
+        animation: robotLegRight 1s infinite ease-in-out;
+      }
+
+      @keyframes robotWalk {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      @keyframes robotBlink {
+        0%,
+        95%,
+        100% {
+          opacity: 1;
+        }
+        97% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes robotArmLeft {
+        0%,
+        100% {
+          transform: rotate(-10deg);
+        }
+        50% {
+          transform: rotate(10deg);
+        }
+      }
+
+      @keyframes robotArmRight {
+        0%,
+        100% {
+          transform: rotate(10deg);
+        }
+        50% {
+          transform: rotate(-10deg);
+        }
+      }
+
+      @keyframes robotLegLeft {
+        0%,
+        100% {
+          transform: rotate(-5deg);
+        }
+        50% {
+          transform: rotate(5deg);
+        }
+      }
+
+      @keyframes robotLegRight {
+        0%,
+        100% {
+          transform: rotate(5deg);
+        }
+        50% {
+          transform: rotate(-5deg);
+        }
+      }
+
+      /* Tutorial Arrows */
+      .tutorial-arrow {
+        position: fixed;
+        z-index: 1002;
+        pointer-events: none;
+        opacity: 0;
+        transition: all 0.5s ease;
+      }
+
+      .tutorial-arrow.show {
+        opacity: 1;
+        animation: arrowPoint 2s infinite ease-in-out;
+      }
+
+      .arrow {
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 20px solid #ff6b35;
+      }
+
+      .arrow-text {
+        background: #ff6b35;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        white-space: nowrap;
+        margin-top: 10px;
+      }
+
+      @keyframes arrowPoint {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* Leaderboard */
+      .leaderboard-table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
+        margin-top: 20px;
       }
 
-      th,
-      td {
-        padding: 12px 15px;
+      .leaderboard-table th,
+      .leaderboard-table td {
+        padding: 15px;
         text-align: left;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 2px solid #f0f0f0;
       }
 
-      th {
-        background-color: var(--secondary-color);
-        font-weight: 500;
+      .leaderboard-table th {
+        background: linear-gradient(45deg, #ff6b35, #f7931e);
+        color: white;
+        font-weight: bold;
       }
 
-      tr:hover {
-        background-color: var(--secondary-color);
+      .leaderboard-table tr:hover {
+        background: #f8f9fa;
+        cursor: pointer;
       }
 
       .player-link {
-        color: var(--primary-color);
+        color: #4a90e2;
         text-decoration: none;
-        font-weight: 500;
+        font-weight: bold;
       }
 
       .player-link:hover {
         text-decoration: underline;
       }
 
-      .battle-card {
-        background-color: white;
-        border: 1px solid var(--border-color);
-        border-radius: 5px;
-        padding: 15px;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      /* Battle Log */
+      .battle-entry {
+        background: #f8f9fa;
+        border-left: 4px solid #ff6b35;
+        padding: 20px;
+        margin: 15px 0;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
       }
 
-      .battle-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid var(--border-color);
-      }
-
-      .battle-result {
-        font-weight: 500;
-        color: var(--primary-color);
+      .battle-entry:hover {
+        transform: translateX(10px);
       }
 
       .battle-date {
-        color: var(--light-text);
-        font-size: 14px;
-      }
-
-      .battle-players {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        gap: 20px;
-      }
-
-      .battle-player {
-        flex: 1;
-        min-width: 200px;
-      }
-
-      .battle-player-name {
-        font-weight: 500;
-        margin-bottom: 5px;
-      }
-
-      .battle-player-score {
-        font-size: 14px;
-        color: var(--light-text);
-      }
-
-      .battle-note {
-        margin-top: 10px;
-        font-style: italic;
-        color: var(--light-text);
-        padding-top: 10px;
-        border-top: 1px solid var(--border-color);
-      }
-
-      .deck-embed {
-        width: 100%;
-        height: 200px;
-        border: none;
-        margin-top: 10px;
-      }
-
-      .rules-section {
-        background-color: white;
-        border: 1px solid var(--border-color);
-        border-radius: 5px;
-        padding: 20px;
-        margin-bottom: 20px;
-      }
-
-      .rules-section h3 {
-        color: var(--primary-color);
-        margin-bottom: 15px;
-      }
-
-      .rules-section ul {
-        list-style-position: inside;
-        margin-bottom: 15px;
-      }
-
-      .rules-section li {
-        margin-bottom: 8px;
-      }
-
-      .game-system {
-        background-color: var(--secondary-color);
-        padding: 15px;
-        border-radius: 5px;
-        margin-top: 20px;
-      }
-
-      .game-system h4 {
-        color: var(--primary-color);
+        font-weight: bold;
+        color: #ff6b35;
         margin-bottom: 10px;
       }
 
+      .battle-match {
+        margin: 5px 0;
+        font-size: 1.1rem;
+      }
+
+      .win {
+        color: #28a745;
+        font-weight: bold;
+      }
+
+      .lose {
+        color: #dc3545;
+        font-weight: bold;
+      }
+
+      /* Organizers */
+      .organizers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+      }
+
+      .organizer-card {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        border: 2px solid #ff6b35;
+        transition: transform 0.3s ease;
+      }
+
+      .organizer-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .organizer-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #ff6b35, #f7931e);
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: white;
+      }
+
+      .organizer-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 15px 0;
+        color: #333;
+      }
+
+      .organizer-role {
+        color: #ff6b35;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      /* Rules */
+      .rules-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      .rules-list li {
+        background: #f8f9fa;
+        margin: 15px 0;
+        padding: 20px;
+        border-left: 4px solid #ff6b35;
+        border-radius: 10px;
+        position: relative;
+      }
+
+      .rules-list li:before {
+        content: "⚡";
+        position: absolute;
+        left: -15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #ff6b35;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Upcoming Program */
+      .upcoming-program {
+        background: linear-gradient(135deg, #ff6b35, #f7931e);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-top: 30px;
+      }
+
+      .personal-greeting {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      /* Mobile Responsive */
       @media (max-width: 768px) {
-        .header-content {
+        .main-content {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .sidebar {
+          position: static;
+          order: 2;
+        }
+
+        .nav {
           flex-direction: column;
-          align-items: flex-start;
+          gap: 20px;
+          padding: 20px;
         }
 
-        .auth-section {
-          margin-top: 15px;
-          width: 100%;
+        .welcome-title {
+          font-size: 2rem;
         }
 
-        .auth-section input {
-          flex: 1;
+        .organizers-grid {
+          grid-template-columns: 1fr;
         }
 
-        .admin-actions {
-          flex-direction: column;
+        .robot {
+          width: 60px;
+          height: 80px;
         }
+      }
 
-        .battle-players {
-          flex-direction: column;
-        }
+      .hidden {
+        display: none !important;
+      }
 
-        th,
-        td {
-          padding: 8px 10px;
-          font-size: 14px;
-        }
+      .user-status {
+        color: white;
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
-    <header>
+    <header class="header">
       <div class="container">
-        <div class="header-content">
-          <div class="logo">Clash Royale Tournament</div>
-          <div class="auth-section">
-            <input
-              type="password"
-              id="adminPassword"
-              placeholder="Admin password"
-            />
-            <button id="loginBtn">Login</button>
-            <button id="logoutBtn" style="display: none">Logout</button>
+        <nav class="nav">
+          <div class="logo">⚔️ Clash Royale Liga</div>
+          <div id="loginFrame" class="login-frame">
+            <div id="loginForm" class="login-form">
+              <input
+                type="text"
+                id="username"
+                placeholder="Uživatelské jméno"
+              />
+              <input type="password" id="password" placeholder="Heslo" />
+              <button class="login-btn" onclick="login()">Přihlásit se</button>
+            </div>
+            <div id="userStatus" class="user-status hidden">
+              Vítej, <span id="loggedUser"></span>!
+              <button
+                class="login-btn"
+                onclick="logout()"
+                style="margin-left: 10px"
+              >
+                Odhlásit
+              </button>
+            </div>
           </div>
-        </div>
+        </nav>
       </div>
     </header>
 
     <div class="container">
-      <div class="admin-panel" id="adminPanel">
-        <h3>Admin Panel</h3>
-        <div class="admin-actions">
-          <div class="admin-section">
-            <h4>Add/Edit Player</h4>
-            <div class="form-group">
-              <label for="playerTag">Player Tag (without #)</label>
-              <input type="text" id="playerTag" placeholder="PlayerTag" />
-            </div>
-            <div class="form-group">
-              <label for="playerName">Player Name</label>
-              <input type="text" id="playerName" placeholder="Player Name" />
-            </div>
-            <div class="form-group">
-              <button id="addPlayerBtn">Add/Update Player</button>
-            </div>
+      <div class="main-content">
+        <aside class="sidebar">
+          <div
+            class="menu-item active"
+            onclick="showSection('welcome')"
+            id="menu-welcome"
+          >
+            <span class="menu-icon">🏠</span>
+            <span>Domov</span>
           </div>
+          <div
+            class="menu-item"
+            onclick="showSection('leaderboard')"
+            id="menu-leaderboard"
+          >
+            <span class="menu-icon">🏆</span>
+            <span>Leaderboard</span>
+          </div>
+          <div
+            class="menu-item"
+            onclick="showSection('battlelog')"
+            id="menu-battlelog"
+          >
+            <span class="menu-icon">📋</span>
+            <span>Battle Log</span>
+          </div>
+          <div class="menu-item" onclick="showSection('rules')" id="menu-rules">
+            <span class="menu-icon">📑</span>
+            <span>Pravidla</span>
+          </div>
+          <div
+            class="menu-item"
+            onclick="showSection('organizers')"
+            id="menu-organizers"
+          >
+            <span class="menu-icon">🧑‍💼</span>
+            <span>Organizátoři</span>
+          </div>
+          <div
+            class="menu-item hidden"
+            onclick="showSection('upcoming')"
+            id="menu-upcoming"
+          >
+            <span class="menu-icon">📅</span>
+            <span>Nadcházející program</span>
+          </div>
+        </aside>
 
-          <div class="admin-section">
-            <h4>Add Match</h4>
-            <div class="form-group">
-              <label for="player1">Player 1</label>
-              <select id="player1"></select>
+        <main class="content-area">
+          <!-- Welcome Section -->
+          <section id="welcome" class="section active">
+            <div class="welcome-section">
+              <h1 class="welcome-title">Vítej v Clash Royale Lize!</h1>
+              <p class="welcome-subtitle">
+                Připoj se k nejlepší komunitní lize a bojuj o titul šampiona!
+              </p>
+              <div id="welcomeMessage"></div>
             </div>
-            <div class="form-group">
-              <label for="player2">Player 2</label>
-              <select id="player2"></select>
+          </section>
+
+          <!-- Leaderboard Section -->
+          <section id="leaderboard" class="section">
+            <h2>🏆 Leaderboard</h2>
+            <table class="leaderboard-table">
+              <thead>
+                <tr>
+                  <th>Pozice</th>
+                  <th>Hráč</th>
+                  <th>Body</th>
+                  <th>Výhry</th>
+                  <th>Prohry</th>
+                  <th>Skóre</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboardBody"></tbody>
+            </table>
+          </section>
+
+          <!-- Battle Log Section -->
+          <section id="battlelog" class="section">
+            <h2>📋 Battle Log</h2>
+            <div id="battleLogContent"></div>
+          </section>
+
+          <!-- Rules Section -->
+          <section id="rules" class="section">
+            <h2>📑 Pravidla ligy</h2>
+            <ul class="rules-list">
+              <li>
+                Pro start v lize je nutné být v klanu "4 veterani" nebo mít
+                všechny hráče ve friendech
+              </li>
+              <li>Přidávání nových hráčů bez povolení founderů je zakázáno</li>
+              <li>
+                Během hracího dne je povinnost odehrát všechny zápasy –
+                neodehrání = odečet 3 bodů
+              </li>
+              <li>Dlouhodobá neaktivita = ban (dle dohody founderů)</li>
+              <li>V případě nejasností kontaktuj foundery</li>
+              <li>Liga je rozdělena do divizí (1–3), každá má 4 hráče</li>
+              <li>Každý s každým hraje 1 zápas (mód si domluví sami)</li>
+              <li>Výhra v základní době = 3 body</li>
+              <li>Výhra v overtime = 2 body, poražený = 1 bod</li>
+              <li>Při rovnosti bodů rozhoduje skóre zničených towerek</li>
+            </ul>
+          </section>
+
+          <!-- Organizers Section -->
+          <section id="organizers" class="section">
+            <h2>🧑‍💼 Organizátoři</h2>
+            <div class="organizers-grid">
+              <div class="organizer-card">
+                <div class="organizer-img">
+                  <img
+                    src="https://i.ibb.co/39bkRpQb/34-F20012-66-DA-40-F7-B443-EB7-CD2630553.png"
+                    alt="TESt"
+                    width="128"
+                    height="auto"
+                  />
+                </div>
+                <div class="organizer-name">Jupík</div>
+                <div class="organizer-role">ChairMan</div>
+                <p>vytvořil tuto stránku</p>
+              </div>
+              <div class="organizer-card">
+                <div class="organizer-img">
+                  <img
+                    src="https://i.ibb.co/9HGbG65J/26-F9-DF9-E-F749-40-F1-8-D4-D-9172100-E23-D2.png"
+                    alt="TESt"
+                  />
+                </div>
+                <div class="organizer-name">Německý mrož</div>
+                <div class="organizer-role">Generální manažer</div>
+                <p>Řídí celkový chod ligy a koordinuje všechny aktivity.</p>
+              </div>
+              <div class="organizer-card">
+                <div class="organizer-img">
+                  <img
+                    src="https://i.ibb.co/Q7yqvJPV/576-EC365-6-CFF-40-A9-A474-00481-B5-A4654.png"
+                    alt="TESt"
+                    width="120"
+                  />
+                </div>
+                <div class="organizer-name">Stepix</div>
+                <div class="organizer-role">
+                  Personalista a prodejce a specialista na jahody.
+                </div>
+                <p>
+                  Stará se o hráče, jejich potřeby a řeší personální
+                  záležitosti.Kupuje jahody a balí je.Vášniví skaut
+                </p>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="winner">Winner</label>
-              <select id="winner">
-                <option value="player1">Player 1</option>
-                <option value="player2">Player 2</option>
-                <option value="draw">Draw</option>
-              </select>
+          </section>
+
+          <!-- Upcoming Program Section -->
+          <section id="upcoming" class="section">
+            <h2>📅 Nadcházející program</h2>
+            <div class="upcoming-program">
+              <div class="personal-greeting" id="personalGreeting"></div>
+              <p>Zde najdeš svůj osobní program a nadcházející zápasy!</p>
+              <div id="upcomingMatches"></div>
             </div>
-            <div class="form-group">
-              <label for="player1Score">Player 1 Score</label>
-              <input
-                type="number"
-                id="player1Score"
-                min="0"
-                max="3"
-                value="1"
-              />
-            </div>
-            <div class="form-group">
-              <label for="player2Score">Player 2 Score</label>
-              <input
-                type="number"
-                id="player2Score"
-                min="0"
-                max="3"
-                value="1"
-              />
-            </div>
-            <div class="form-group">
-              <label for="matchNote">Note</label>
-              <input type="text" id="matchNote" placeholder="Optional note" />
-            </div>
-            <div class="form-group">
-              <button id="addMatchBtn">Add Match</button>
-            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- 3D Robot Guide -->
+    <div class="robot-container" onclick="startTutorial()">
+      <div class="robot">
+        <div class="robot-head">
+          <div class="robot-eyes">
+            <div class="robot-eye"></div>
+            <div class="robot-eye"></div>
           </div>
         </div>
-      </div>
-
-      <div class="tabs">
-        <div class="tab active" data-tab="leaderboard">Leaderboard</div>
-        <div class="tab" data-tab="battles">Battle Log</div>
-        <div class="tab" data-tab="rules">Rules</div>
-      </div>
-
-      <div class="tab-content active" id="leaderboard">
-        <h2>Leaderboard</h2>
-        <table id="leaderboardTable">
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Player</th>
-              <th>Wins</th>
-              <th>Losses</th>
-              <th>Matches</th>
-              <th>Points</th>
-            </tr>
-          </thead>
-          <tbody id="leaderboardBody"></tbody>
-        </table>
-      </div>
-
-      <div class="tab-content" id="battles">
-        <h2>Battle Log</h2>
-        <div id="battleLog"></div>
-      </div>
-
-      <div class="tab-content" id="rules">
-        <div class="rules-section">
-          <h3>Tournament Rules</h3>
-          <ul>
-            <li>
-              Pro účast v lize je nutné být v klanu „4 Veteráni" nebo mít
-              všechny hráče v přátelích
-            </li>
-            <li>Přidávání nových hráčů bez povolení founderů je zakázáno</li>
-            <li>
-              Během hracího dne je povinnost odehrát všechny zápasy – neodehrání
-              = -3 body
-            </li>
-            <li>Dlouhá neaktivita = BAN podle rozhodnutí founderů</li>
-            <li>V případě nejasností kontaktujte foundery</li>
-          </ul>
+        <div class="robot-body"></div>
+        <div class="robot-arms">
+          <div class="robot-arm left"></div>
+          <div class="robot-arm right"></div>
         </div>
-
-        <div class="game-system">
-          <h4>Game System</h4>
-          <ul>
-            <li>Každý hráč hraje s každým jeden zápas</li>
-            <li>Výhra v základní době = 3 body</li>
-            <li>Výhra v overtime = 2 body</li>
-            <li>Poražený v overtime = 1 bod</li>
-            <li>Při rovnosti bodů rozhoduje počet zničených towerek (skóre)</li>
-          </ul>
+        <div class="robot-legs">
+          <div class="robot-leg left"></div>
+          <div class="robot-leg right"></div>
         </div>
       </div>
     </div>
 
+    <!-- Tutorial Arrows -->
+    <div class="tutorial-arrow" id="tutorialArrow">
+      <div class="arrow"></div>
+      <div class="arrow-text" id="arrowText"></div>
+    </div>
+
     <script>
-      // Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyAWrFEusuCUbarU9UJuI0EIpEZE3gFJGbQ",
-        authDomain: "clash-royale-tournament-c7688.firebaseapp.com",
-        databaseURL:
-          "https://clash-royale-tournament-c7688-default-rtdb.firebaseio.com",
-        projectId: "clash-royale-tournament-c7688",
-        storageBucket: "clash-royale-tournament-c7688.appspot.com",
-        messagingSenderId: "834565862453",
-        appId: "1:834565862453:web:85b84f9c037b32f48a2d7c",
-        measurementId: "G-X8YL6G1QM9",
-      };
+      // Players data
+      const players = [
+        {
+          name: "Dzejkub",
+          tag: "ABC123",
+          points: 6,
+          wins: 2,
+          losses: 0,
+          towers: 4,
+        },
+        {
+          name: "Stepix",
+          tag: "DEF456",
+          points: 3,
+          wins: 1,
+          losses: 1,
+          towers: 1,
+        },
+        {
+          name: "Sejmin",
+          tag: "GHI789",
+          points: 1,
+          wins: 0,
+          losses: 2,
+          towers: 1,
+        },
+        {
+          name: "Denny",
+          tag: "JKL012",
+          points: 4,
+          wins: 1,
+          losses: 1,
+          towers: 3,
+        },
+        {
+          name: "Dzegor",
+          tag: "MNO345",
+          points: 4,
+          wins: 1,
+          losses: 1,
+          towers: 1,
+        },
+        {
+          name: "Matej Koly",
+          tag: "PQR678",
+          points: 3,
+          wins: 1,
+          losses: 1,
+          towers: 1,
+        },
+        {
+          name: "Kuba Pitrek",
+          tag: "STU901",
+          points: 0,
+          wins: 0,
+          losses: 1,
+          towers: 0,
+        },
+        {
+          name: "Skubi",
+          tag: "VWX234",
+          points: 6,
+          wins: 2,
+          losses: 1,
+          towers: 3,
+        },
+      ];
 
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const database = firebase.database();
+      // Battle data
+      const battles = [
+        {
+          date: "1. matchday - 6.6 2025",
+          matches: [
+            {
+              player1: "Dzejkub",
+              player2: "Sejmin",
+              score: "1:0",
+              type: "základní hrací doba",
+              winner: "Dzejkub",
+            },
+            {
+              player1: "Denny",
+              player2: "Dzegor",
+              score: "0:1",
+              type: "overtime",
+              winner: "Dzegor",
+            },
+            {
+              player1: "Stepix",
+              player2: "Matej Koly",
+              score: "0:1",
+              type: "základní doba",
+              winner: "Matej Koly",
+            },
+            {
+              player1: "Kuba Pitrek",
+              player2: "Skubi",
+              score: "0:2",
+              type: "základní hrací doba",
+              winner: "Skubi",
+            },
+          ],
+        },
+        {
+          date: "2. matchday - 9.6 2025",
+          matches: [
+            {
+              player1: "Dzejkub",
+              player2: "Denny",
+              score: "3:0",
+              type: "základní hrací doba",
+              winner: "Dzejkub",
+            },
+            {
+              player1: "Sejmin",
+              player2: "Skubi",
+              score: "0:1",
+              type: "základní hrací doba",
+              winner: "Skubi",
+            },
+            {
+              player1: "Stepix",
+              player2: "Kuba Pitrek",
+              score: "dohraje se později",
+              type: "",
+              winner: null,
+            },
+            {
+              player1: "Matej Koly",
+              player2: "Dzegor",
+              score: "dohraje se",
+              type: "",
+              winner: null,
+            },
+          ],
+        },
+      ];
 
-      // Admin password (in a real app, use Firebase Auth properly)
-      const ADMIN_PASSWORD = "tournament123";
+      let currentUser = null;
+      let tutorialStep = 0;
 
-      // DOM elements
-      const loginBtn = document.getElementById("loginBtn");
-      const logoutBtn = document.getElementById("logoutBtn");
-      const adminPassword = document.getElementById("adminPassword");
-      const adminPanel = document.getElementById("adminPanel");
-      const addPlayerBtn = document.getElementById("addPlayerBtn");
-      const addMatchBtn = document.getElementById("addMatchBtn");
-      const playerTagInput = document.getElementById("playerTag");
-      const playerNameInput = document.getElementById("playerName");
-      const player1Select = document.getElementById("player1");
-      const player2Select = document.getElementById("player2");
-      const winnerSelect = document.getElementById("winner");
-      const player1ScoreInput = document.getElementById("player1Score");
-      const player2ScoreInput = document.getElementById("player2Score");
-      const matchNoteInput = document.getElementById("matchNote");
-      const leaderboardBody = document.getElementById("leaderboardBody");
-      const battleLog = document.getElementById("battleLog");
-      const tabs = document.querySelectorAll(".tab");
-      const tabContents = document.querySelectorAll(".tab-content");
-
-      // State
-      let players = [];
-      let matches = [];
-      let isAdmin = false;
-
-      // Initialize the app
+      // Initialize the application
       function init() {
-        checkAuth();
-        setupEventListeners();
-        fetchData();
+        updateLeaderboard();
+        updateBattleLog();
       }
 
-      // Check authentication status
-      function checkAuth() {
-        const savedPassword = localStorage.getItem("adminPassword");
-        if (savedPassword === ADMIN_PASSWORD) {
-          isAdmin = true;
-          adminPanel.style.display = "block";
-          loginBtn.style.display = "none";
-          logoutBtn.style.display = "block";
-          adminPassword.value = "";
-        }
-      }
+      // Login function
+      function login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
 
-      // Set up event listeners
-      function setupEventListeners() {
-        // Tab switching
-        tabs.forEach((tab) => {
-          tab.addEventListener("click", () => {
-            tabs.forEach((t) => t.classList.remove("active"));
-            tabContents.forEach((c) => c.classList.remove("active"));
+        if (username && password === "123") {
+          currentUser = username;
+          document.getElementById("loginForm").classList.add("hidden");
+          document.getElementById("userStatus").classList.remove("hidden");
+          document.getElementById("loggedUser").textContent = username;
+          document.getElementById("menu-upcoming").classList.remove("hidden");
 
-            tab.classList.add("active");
-            const tabId = tab.getAttribute("data-tab");
-            document.getElementById(tabId).classList.add("active");
-          });
-        });
-
-        // Authentication
-        loginBtn.addEventListener("click", handleLogin);
-        logoutBtn.addEventListener("click", handleLogout);
-        adminPassword.addEventListener("keypress", (e) => {
-          if (e.key === "Enter") handleLogin();
-        });
-
-        // Admin actions
-        addPlayerBtn.addEventListener("click", addPlayer);
-        addMatchBtn.addEventListener("click", addMatch);
-      }
-
-      // Handle login
-      function handleLogin() {
-        if (adminPassword.value === ADMIN_PASSWORD) {
-          isAdmin = true;
-          adminPanel.style.display = "block";
-          loginBtn.style.display = "none";
-          logoutBtn.style.display = "block";
-          adminPassword.value = "";
-          localStorage.setItem("adminPassword", ADMIN_PASSWORD);
+          updatePersonalizedContent();
+          showWelcomeAnimation();
+          setTimeout(startTutorial, 2000);
         } else {
-          alert("Incorrect password");
+          alert('Špatné přihlašovací údaje! Heslo je vždy "123".');
         }
       }
 
-      // Handle logout
-      function handleLogout() {
-        isAdmin = false;
-        adminPanel.style.display = "none";
-        loginBtn.style.display = "block";
-        logoutBtn.style.display = "none";
-        localStorage.removeItem("adminPassword");
+      // Logout function
+      function logout() {
+        currentUser = null;
+        document.getElementById("loginForm").classList.remove("hidden");
+        document.getElementById("userStatus").classList.add("hidden");
+        document.getElementById("menu-upcoming").classList.add("hidden");
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+        showSection("welcome");
       }
 
-      // Fetch data from Firebase
-      function fetchData() {
-        // Fetch players
-        database.ref("players").on("value", (snapshot) => {
-          players = [];
-          const data = snapshot.val();
-          if (data) {
-            Object.keys(data).forEach((key) => {
-              players.push({ id: key, ...data[key] });
-            });
-            updatePlayerSelects();
-            renderLeaderboard();
-          }
+      // Show section
+      function showSection(sectionName) {
+        document.querySelectorAll(".section").forEach((section) => {
+          section.classList.remove("active");
+        });
+        document.querySelectorAll(".menu-item").forEach((item) => {
+          item.classList.remove("active");
         });
 
-        // Fetch matches
-        database.ref("matches").on("value", (snapshot) => {
-          matches = [];
-          const data = snapshot.val();
-          if (data) {
-            Object.keys(data).forEach((key) => {
-              matches.push({ id: key, ...data[key] });
-            });
-            renderBattleLog();
-          }
-        });
+        document.getElementById(sectionName).classList.add("active");
+        document.getElementById("menu-" + sectionName).classList.add("active");
       }
 
-      // Add or update a player
-      function addPlayer() {
-        const tag = playerTagInput.value.trim();
-        const name = playerNameInput.value.trim();
-
-        if (!tag || !name) {
-          alert("Please enter both player tag and name");
-          return;
-        }
-
-        // Check if player already exists
-        const existingPlayer = players.find((p) => p.tag === tag);
-
-        if (existingPlayer) {
-          // Update player
-          database
-            .ref(`players/${existingPlayer.id}`)
-            .update({
-              name: name,
-            })
-            .then(() => {
-              alert("Player updated successfully");
-              playerTagInput.value = "";
-              playerNameInput.value = "";
-            })
-            .catch((error) => {
-              alert("Error updating player: " + error.message);
-            });
-        } else {
-          // Add new player
-          const newPlayer = {
-            tag: tag,
-            name: name,
-            wins: 0,
-            losses: 0,
-            matches: 0,
-            points: 0,
-          };
-
-          database
-            .ref("players")
-            .push(newPlayer)
-            .then(() => {
-              alert("Player added successfully");
-              playerTagInput.value = "";
-              playerNameInput.value = "";
-            })
-            .catch((error) => {
-              alert("Error adding player: " + error.message);
-            });
-        }
-      }
-
-      // Add a match
-      function addMatch() {
-        const player1Id = player1Select.value;
-        const player2Id = player2Select.value;
-        const winner = winnerSelect.value;
-        const player1Score = parseInt(player1ScoreInput.value);
-        const player2Score = parseInt(player2ScoreInput.value);
-        const note = matchNoteInput.value.trim();
-        const timestamp = new Date().toISOString();
-
-        if (!player1Id || !player2Id || player1Id === player2Id) {
-          alert("Please select two different players");
-          return;
-        }
-
-        const player1 = players.find((p) => p.id === player1Id);
-        const player2 = players.find((p) => p.id === player2Id);
-
-        if (!player1 || !player2) {
-          alert("Selected players not found");
-          return;
-        }
-
-        // Calculate points based on scores
-        let player1Points = 0;
-        let player2Points = 0;
-
-        if (winner === "player1") {
-          if (player1Score === 3) {
-            player1Points = 3; // Regular win
-            player2Points = 0;
-          } else {
-            player1Points = 2; // Overtime win
-            player2Points = 1; // Overtime loss
-          }
-        } else if (winner === "player2") {
-          if (player2Score === 3) {
-            player1Points = 0;
-            player2Points = 3; // Regular win
-          } else {
-            player1Points = 1; // Overtime loss
-            player2Points = 2; // Overtime win
-          }
-        } else {
-          // Draw (shouldn't happen with current UI)
-          player1Points = 1;
-          player2Points = 1;
-        }
-
-        // Create match object
-        const match = {
-          player1: {
-            id: player1Id,
-            name: player1.name,
-            tag: player1.tag,
-            score: player1Score,
-            points: player1Points,
-          },
-          player2: {
-            id: player2Id,
-            name: player2.name,
-            tag: player2.tag,
-            score: player2Score,
-            points: player2Points,
-          },
-          winner: winner,
-          note: note,
-          timestamp: timestamp,
-        };
-
-        // Add match to database
-        database
-          .ref("matches")
-          .push(match)
-          .then(() => {
-            // Update player stats
-            updatePlayerStats(
-              player1Id,
-              player2Id,
-              winner,
-              player1Points,
-              player2Points
-            );
-
-            // Clear form
-            player1Select.value = "";
-            player2Select.value = "";
-            winnerSelect.value = "player1";
-            player1ScoreInput.value = "1";
-            player2ScoreInput.value = "1";
-            matchNoteInput.value = "";
-
-            alert("Match added successfully");
-          })
-          .catch((error) => {
-            alert("Error adding match: " + error.message);
-          });
-      }
-
-      // Update player stats after a match
-      function updatePlayerStats(
-        player1Id,
-        player2Id,
-        winner,
-        player1Points,
-        player2Points
-      ) {
-        const player1Ref = database.ref(`players/${player1Id}`);
-        const player2Ref = database.ref(`players/${player2Id}`);
-
-        // Get current stats
-        player1Ref.once("value").then((snapshot) => {
-          const player1 = snapshot.val();
-          const newWins1 =
-            winner === "player1" ? (player1.wins || 0) + 1 : player1.wins || 0;
-          const newLosses1 =
-            winner === "player2"
-              ? (player1.losses || 0) + 1
-              : player1.losses || 0;
-
-          player1Ref.update({
-            wins: newWins1,
-            losses: newLosses1,
-            matches: (player1.matches || 0) + 1,
-            points: (player1.points || 0) + player1Points,
-          });
+      // Update leaderboard
+      function updateLeaderboard() {
+        const sortedPlayers = [...players].sort((a, b) => {
+          if (b.points !== a.points) return b.points - a.points;
+          return b.towers - a.towers;
         });
 
-        player2Ref.once("value").then((snapshot) => {
-          const player2 = snapshot.val();
-          const newWins2 =
-            winner === "player2" ? (player2.wins || 0) + 1 : player2.wins || 0;
-          const newLosses2 =
-            winner === "player1"
-              ? (player2.losses || 0) + 1
-              : player2.losses || 0;
-
-          player2Ref.update({
-            wins: newWins2,
-            losses: newLosses2,
-            matches: (player2.matches || 0) + 1,
-            points: (player2.points || 0) + player2Points,
-          });
-        });
-      }
- // Update player selects in match form
-      function updatePlayerSelects() {
-        player1Select.innerHTML = '<option value="">Select Player 1</option>';
-        player2Select.innerHTML = '<option value="">Select Player 2</option>';
-        players.forEach((player) => {
-          const option1 = document.createElement("option");
-          option1.value = player.id;
-          option1.textContent = player.name;
-
-          const option2 = document.createElement("option");
-          option2.value = player.id;
-          option2.textContent = player.name;
-
-          player1Select.appendChild(option1);
-          player2Select.appendChild(option2);
-        });
-      }
-
-      // Render leaderboard
-      function renderLeaderboard() {
-        // Sort players by points (descending)
-        const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
-
-        leaderboardBody.innerHTML = "";
+        const tbody = document.getElementById("leaderboardBody");
+        tbody.innerHTML = "";
 
         sortedPlayers.forEach((player, index) => {
           const row = document.createElement("tr");
-
           row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>
-                        <a href="https://royaleapi.com/player/${
-                          player.tag
-                        }" class="player-link" target="_blank">
-                            ${player.name}
-                        </a>
-                    </td>
-                    <td>${player.wins || 0}</td>
-                    <td>${player.losses || 0}</td>
-                    <td>${player.matches || 0}</td>
-                    <td>${player.points || 0}</td>
+                    <td><a href="https://royaleapi.com/player/${
+                      player.tag
+                    }" target="_blank" class="player-link">${
+            player.name
+          }</a></td>
+                    <td>${player.points}</td>
+                    <td>${player.wins}</td>
+                    <td>${player.losses}</td>
+                    <td>${player.towers}</td>
                 `;
-
-          leaderboardBody.appendChild(row);
+          tbody.appendChild(row);
         });
       }
 
-      // Render battle log
-      function renderBattleLog() {
-        // Sort matches by timestamp (newest first)
-        const sortedMatches = [...matches].sort(
-          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-        );
+      // Update battle log
+      function updateBattleLog() {
+        const battleLogContent = document.getElementById("battleLogContent");
+        battleLogContent.innerHTML = "";
 
-        battleLog.innerHTML = "";
+        battles.forEach((battleDay) => {
+          const dayDiv = document.createElement("div");
+          dayDiv.className = "battle-entry";
 
-        if (sortedMatches.length === 0) {
-          battleLog.innerHTML = "<p>No matches recorded yet.</p>";
+          let matchesHtml = `<div class="battle-date">${battleDay.date}</div>`;
+
+          battleDay.matches.forEach((match) => {
+            const isCurrentUserMatch =
+              currentUser &&
+              (match.player1 === currentUser || match.player2 === currentUser);
+            let matchClass = "";
+            let resultText = "";
+
+            if (isCurrentUserMatch && match.winner) {
+              if (match.winner === currentUser) {
+                matchClass = "win";
+                resultText = " (VÝHRA)";
+              } else {
+                matchClass = "lose";
+                resultText = " (PROHRA)";
+              }
+            }
+
+            matchesHtml += `
+                        <div class="battle-match ${matchClass}">
+                            ${match.player1} vs ${match.player2} - ${
+              match.score
+            }${match.type ? " - " + match.type : ""}${resultText}
+                        </div>
+                    `;
+          });
+
+          dayDiv.innerHTML = matchesHtml;
+          battleLogContent.appendChild(dayDiv);
+        });
+      }
+
+      // Update personalized content
+      function updatePersonalizedContent() {
+        if (currentUser) {
+          document.getElementById(
+            "personalGreeting"
+          ).textContent = `Vítej zpět, ${currentUser}!`;
+          updateBattleLog(); // Refresh battle log to show personalized results
+        }
+      }
+
+      // Show welcome animation
+      function showWelcomeAnimation() {
+        const welcomeMessage = document.getElementById("welcomeMessage");
+        welcomeMessage.innerHTML = `
+                <div style="background: linear-gradient(45deg, #ff6b35, #f7931e); color: white; padding: 30px; border-radius: 15px; margin-top: 30px; animation: bounceIn 1s ease-out;">
+                    <h3>🎉 Vítej, ${currentUser}!</h3>
+                    <p>Úspěšně ses přihlásil do Clash Royale Ligy. Náš robotický průvodce ti za chvíli ukáže, kde co najdeš!</p>
+                </div>
+            `;
+      }
+
+      // Tutorial system
+      function startTutorial() {
+        if (!currentUser) {
+          alert("Nejdříve se přihlaš pro spuštění tutoriálu!");
           return;
         }
 
-        sortedMatches.forEach((match) => {
-          const battleCard = document.createElement("div");
-          battleCard.className = "battle-card";
-
-          const resultText =
-            match.winner === "player1"
-              ? `${match.player1.name} defeated ${match.player2.name}`
-              : match.winner === "player2"
-              ? `${match.player2.name} defeated ${match.player1.name}`
-              : `Draw between ${match.player1.name} and ${match.player2.name}`;
-
-          const date = new Date(match.timestamp).toLocaleString();
-
-          battleCard.innerHTML = `
-                    <div class="battle-header">
-                        <div class="battle-result">${resultText}</div>
-                        <div class="battle-date">${date}</div>
-                    </div>
-                    <div class="battle-players">
-                        <div class="battle-player">
-                            <div class="battle-player-name">${
-                              match.player1.name
-                            }</div>
-                            <div class="battle-player-score">Score: ${
-                              match.player1.score
-                            } | Points: +${match.player1.points}</div>
-                            <iframe class="deck-embed" src="https://royaleapi.com/player/${
-                              match.player1.tag
-                            }/embed/deck?size=large"></iframe>
-                        </div>
-                        <div class="battle-player">
-                            <div class="battle-player-name">${
-                              match.player2.name
-                            }</div>
-                            <div class="battle-player-score">Score: ${
-                              match.player2.score
-                            } | Points: +${match.player2.points}</div>
-                            <iframe class="deck-embed" src="https://royaleapi.com/player/${
-                              match.player2.tag
-                            }/embed/deck?size=large"></iframe>
-                        </div>
-                    </div>
-                    ${
-                      match.note
-                        ? `<div class="battle-note">Note: ${match.note}</div>`
-                        : ""
-                    }
-                `;
-
-          battleLog.appendChild(battleCard);
-        });
+        tutorialStep = 0;
+        nextTutorialStep();
       }
 
-      // Initialize the app
-      init();
+      function nextTutorialStep() {
+        const arrow = document.getElementById("tutorialArrow");
+        const arrowText = document.getElementById("arrowText");
+
+        arrow.classList.remove("show");
+
+        setTimeout(() => {
+          switch (tutorialStep) {
+            case 0:
+              pointToElement(
+                "#menu-leaderboard",
+                "Zde najdeš žebříček hráčů seřazený podle bodů!"
+              );
+              break;
+            case 1:
+              pointToElement(
+                "#menu-battlelog",
+                "Tady vidíš historii všech zápasů a své výsledky!"
+              );
+              break;
+            case 2:
+              pointToElement(
+                "#menu-rules",
+                "Pravidla ligy - důležité ke přečtení!"
+              );
+              break;
+            case 3:
+              pointToElement(
+                "#menu-organizers",
+                "Seznamte se s organizátory ligy!"
+              );
+              break;
+            case 4:
+              pointToElement(
+                "#menu-upcoming",
+                "Tvůj osobní program a nadcházející zápasy!"
+              );
+              break;
+            default:
+              arrow.classList.remove("show");
+              alert(
+                "Tutoriál dokončen! Klikni na robota kdykoli pro zopakování."
+              );
+              return;
+          }
+          tutorialStep++;
+          setTimeout(nextTutorialStep, 3000);
+        }, 500);
+      }
+
+      function pointToElement(selector, text) {
+        const element = document.querySelector(selector);
+        const arrow = document.getElementById("tutorialArrow");
+        const arrowText = document.getElementById("arrowText");
+
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          arrow.style.left = rect.left + rect.width / 2 - 15 + "px";
+          arrow.style.top = rect.top - 50 + "px";
+          arrowText.textContent = text;
+          arrow.classList.add("show");
+        }
+      }
+
+      // Initialize the app when page loads
+      window.addEventListener("load", init);
     </script>
   </body>
 </html>

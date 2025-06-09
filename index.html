@@ -826,12 +826,10 @@
           });
         });
       }
-
-      // Update player selects in match form
+ // Update player selects in match form
       function updatePlayerSelects() {
         player1Select.innerHTML = '<option value="">Select Player 1</option>';
         player2Select.innerHTML = '<option value="">Select Player 2</option>';
-
         players.forEach((player) => {
           const option1 = document.createElement("option");
           option1.value = player.id;

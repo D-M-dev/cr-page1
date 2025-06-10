@@ -633,174 +633,178 @@
       </div>
     </header>
 
-    <div class="container">
-      <div class="main-content">
-        <aside class="sidebar">
-          <div
-            class="menu-item active"
-            onclick="showSection('welcome')"
-            id="menu-welcome"
-          >
-            <span class="menu-icon">🏠</span>
-            <span>Domov</span>
-          </div>
-          <div
-            class="menu-item"
-            onclick="showSection('leaderboard')"
-            id="menu-leaderboard"
-          >
-            <span class="menu-icon">🏆</span>
-            <span>Leaderboard</span>
-          </div>
-          <div
-            class="menu-item"
-            onclick="showSection('battlelog')"
-            id="menu-battlelog"
-          >
-            <span class="menu-icon">📋</span>
-            <span>Battle Log</span>
-          </div>
-          <div class="menu-item" onclick="showSection('rules')" id="menu-rules">
-            <span class="menu-icon">📑</span>
-            <span>Pravidla</span>
-          </div>
-          <div
-            class="menu-item"
-            onclick="showSection('organizers')"
-            id="menu-organizers"
-          >
-            <span class="menu-icon">🧑‍💼</span>
-            <span>Organizátoři</span>
-          </div>
-          <div
-            class="menu-item hidden"
-            onclick="showSection('upcoming')"
-            id="menu-upcoming"
-          >
-            <span class="menu-icon">📅</span>
-            <span>Nadcházející program</span>
-          </div>
-        </aside>
+```
+<div class="container">
+  <div class="main-content">
+    <aside class="sidebar">
+      <div
+        class="menu-item active"
+        onclick="showSection('welcome')"
+        id="menu-welcome"
+      >
+        <span class="menu-icon">🏠</span>
+        <span>Domov</span>
+      </div>
+      <div
+        class="menu-item"
+        onclick="showSection('leaderboard')"
+        id="menu-leaderboard"
+      >
+        <span class="menu-icon">🏆</span>
+        <span>Leaderboard</span>
+      </div>
+      <div
+        class="menu-item"
+        onclick="showSection('battlelog')"
+        id="menu-battlelog"
+      >
+        <span class="menu-icon">📋</span>
+        <span>Battle Log</span>
+      </div>
+      <div class="menu-item" onclick="showSection('rules')" id="menu-rules">
+        <span class="menu-icon">📑</span>
+        <span>Pravidla</span>
+      </div>
+      <div
+        class="menu-item"
+        onclick="showSection('organizers')"
+        id="menu-organizers"
+      >
+        <span class="menu-icon">🧑‍💼</span>
+        <span>Organizátoři</span>
+      </div>
+      <div
+        class="menu-item hidden"
+        onclick="showSection('upcoming')"
+        id="menu-upcoming"
+      >
+        <span class="menu-icon">📅</span>
+        <span>Nadcházející program</span>
+      </div>
+    </aside>
 
-        <main class="content-area">
-          <!-- Welcome Section -->
-          <section id="welcome" class="section active">
-            <div class="welcome-section">
-              <h1 class="welcome-title">Vítej v Clash Royale Lize!</h1>
-              <p class="welcome-subtitle">
-                Připoj se k nejlepší komunitní lize a bojuj o titul šampiona!
-              </p>
-              <div id="welcomeMessage"></div>
+    <main class="content-area">
+      <!-- Welcome Section -->
+      <section id="welcome" class="section active">
+        <div class="welcome-section">
+          <h1 class="welcome-title">Vítej v Clash Royale Lize!</h1>
+          <p class="welcome-subtitle">
+            Připoj se k nejlepší komunitní lize a bojuj o titul šampiona!
+          </p>
+          <div id="welcomeMessage"></div>
+        </div>
+      </section>
+
+      <!-- Leaderboard Section -->
+      <section id="leaderboard" class="section">
+        <h2>🏆 Leaderboard</h2>
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Pozice</th>
+              <th>Hráč</th>
+              <th>Body</th>
+              <th>Výhry</th>
+              <th>Prohry</th>
+              <th>Skóre</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody"></tbody>
+        </table>
+      </section>
+
+      <!-- Battle Log Section -->
+      <section id="battlelog" class="section">
+        <h2>📋 Battle Log</h2>
+        <div id="battleLogContent"></div>
+      </section>
+
+      <!-- Rules Section -->
+      <section id="rules" class="section">
+        <h2>📑 Pravidla ligy</h2>
+        <ul class="rules-list">
+          <li>
+            Pro start v lize je nutné být v klanu "4 veterani" nebo mít
+            všechny hráče ve friendech
+          </li>
+          <li>Přidávání nových hráčů bez povolení founderů je zakázáno</li>
+          <li>
+            Během hracího dne je povinnost odehrát všechny zápasy –
+            neodehrání = odečet 3 bodů
+          </li>
+          <li>Dlouhodobá neaktivita = ban (dle dohody founderů)</li>
+          <li>V případě nejasností kontaktuj foundery</li>
+          <li>Liga je rozdělena do divizí (1–3), každá má 4 hráče</li>
+          <li>Každý s každým hraje 1 zápas (mód si domluví sami)</li>
+          <li>Výhra v základní době = 3 body</li>
+          <li>Výhra v overtime = 2 body, poražený = 1 bod</li>
+          <li>Při rovnosti bodů rozhoduje skóre zničených towerek</li>
+        </ul>
+      </section>
+
+      <!-- Organizers Section -->
+      <section id="organizers" class="section">
+        <h2>🧑‍💼 Organizátoři</h2>
+        <div class="organizers-grid">
+          <div class="organizer-card">
+            <div class="organizer-img">
+              <img
+                src="https://i.ibb.co/39bkRpQb/34-F20012-66-DA-40-F7-B443-EB7-CD2630553.png"
+                alt="TESt"
+                width="128"
+                height="auto"
+              />
             </div>
-          </section>
-
-          <!-- Leaderboard Section -->
-          <section id="leaderboard" class="section">
-            <h2>🏆 Leaderboard</h2>
-            <table class="leaderboard-table">
-              <thead>
-                <tr>
-                  <th>Pozice</th>
-                  <th>Hráč</th>
-                  <th>Body</th>
-                  <th>Výhry</th>
-                  <th>Prohry</th>
-                  <th>Skóre</th>
-                </tr>
-              </thead>
-              <tbody id="leaderboardBody"></tbody>
-            </table>
-          </section>
-
-          <!-- Battle Log Section -->
-          <section id="battlelog" class="section">
-            <h2>📋 Battle Log</h2>
-            <div id="battleLogContent"></div>
-          </section>
-
-          <!-- Rules Section -->
-          <section id="rules" class="section">
-            <h2>📑 Pravidla ligy</h2>
-            <ul class="rules-list">
-              <li>
-                Pro start v lize je nutné být v klanu "4 veterani" nebo mít
-                všechny hráče ve friendech
-              </li>
-              <li>Přidávání nových hráčů bez povolení founderů je zakázáno</li>
-              <li>
-                Během hracího dne je povinnost odehrát všechny zápasy –
-                neodehrání = odečet 3 bodů
-              </li>
-              <li>Dlouhodobá neaktivita = ban (dle dohody founderů)</li>
-              <li>V případě nejasností kontaktuj foundery</li>
-              <li>Liga je rozdělena do divizí (1–3), každá má 4 hráče</li>
-              <li>Každý s každým hraje 1 zápas (mód si domluví sami)</li>
-              <li>Výhra v základní době = 3 body</li>
-              <li>Výhra v overtime = 2 body, poražený = 1 bod</li>
-              <li>Při rovnosti bodů rozhoduje skóre zničených towerek</li>
-            </ul>
-          </section>
-
-          <!-- Organizers Section -->
-          <section id="organizers" class="section">
-            <h2>🧑‍💼 Organizátoři</h2>
-            <div class="organizers-grid">
-              <div class="organizer-card">
-                <div class="organizer-img">
-                  <img
-                    src="https://i.ibb.co/39bkRpQb/34-F20012-66-DA-40-F7-B443-EB7-CD2630553.png"
-                    alt="TESt"
-                    width="128"
-                    height="auto"
-                  />
-                </div>
-                <div class="organizer-name">Jupík</div>
-                <div class="organizer-role">ChairMan</div>
-                <p>vytvořil tuto stránku</p>
-              </div>
-              <div class="organizer-card">
-                <div class="organizer-img">
-                  <img
-                    src="https://i.ibb.co/9HGbG65J/26-F9-DF9-E-F749-40-F1-8-D4-D-9172100-E23-D2.png"
-                    alt="TESt"
-                  />
-                </div>
-                <div class="organizer-name">Německý mrož</div>
-                <div class="organizer-role">Generální manažer</div>
-                <p>Řídí celkový chod ligy a koordinuje všechny aktivity.</p>
-              </div>
-              <div class="organizer-card">
-                <div class="organizer-img">
-                  <img
-                    src="https://i.ibb.co/Q7yqvJPV/576-EC365-6-CFF-40-A9-A474-00481-B5-A4654.png"
-                    alt="TESt"
-                    width="120"
-                  />
-                </div>
-                <div class="organizer-name">Stepix</div>
-                <div class="organizer-role">
-                  Personalista a prodejce a specialista na jahody.
-                </div>
-                <p>
-                  Stará se o hráče, jejich potřeby a řeší personální
-                  záležitosti.Kupuje jahody a balí je.Vášnivý skaut
-                </p>
-              </div>
+            <div class="organizer-name">Jupík</div>
+            <div class="organizer-role">ChairMan</div>
+            <p>vytvořil tuto stránku</p>
+          </div>
+          <div class="organizer-card">
+            <div class="organizer-img">
+              <img
+                src="https://i.ibb.co/9HGbG65J/26-F9-DF9-E-F749-40-F1-8-D4-D-9172100-E23-D2.png"
+                alt="TESt"
+              />
             </div>
-          </section>
-          
-          
-<section id="zpravy" class="section">
+            <div class="organizer-name">Německý mrož</div>
+            <div class="organizer-role">Generální manažer</div>
+            <p>Řídí celkový chod ligy a koordinuje všechny aktivity.</p>
+          </div>
+          <div class="organizer-card">
+            <div class="organizer-img">
+              <img
+                src="https://i.ibb.co/Q7yqvJPV/576-EC365-6-CFF-40-A9-A474-00481-B5-A4654.png"
+                alt="TESt"
+                width="120"
+              />
+            </div>
+            <div class="organizer-name">Stepix</div>
+            <div class="organizer-role">
+              Personalista a prodejce a specialista na jahody.
+            </div>
+            <p>
+              Stará se o hráče, jejich potřeby a řeší personální
+              záležitosti.Kupuje jahody a balí je.Vášnivý skaut
+            </p>
+          </div>
+        </div>
+      </section>
+```
+
+<section id="zpravy" class="section" onclick="window.open('https://www.google.com', '_blank')" style="cursor: pointer;">
             <h2>Zprávy</h2>
             <div id="bat"></div>
           </section>
-          
-          <!-- Upcoming Program Section -->
-          <section id="upcoming" class="section">
-            <h2>📅 Nadcházející program</h2>
-            <div class="upcoming-program">
-              <div class="personal-greeting" id="personalGreeting"></div>
-              <p>matchday - 6.6 2025
+
+```
+      <!-- Upcoming Program Section -->
+      <section id="upcoming" class="section">
+        <h2>📅 Nadcházející program</h2>
+        <div class="upcoming-program">
+          <div class="personal-greeting" id="personalGreeting"></div>
+          <p>matchday - 6.6 2025
+```
+
 Dzejkub vs Sejmin -1:0 zakaldni hraci doba
 Denny vs Dzegor - 0:1 - overtime
 Stepix vs Matej koly - 0:1 zakladni doba
@@ -830,39 +834,41 @@ Výherce dvojice 1 vs Výherce dvojice 3
 Výherce dvojice 1 vs Výherce dvojice 3
 Výherce dvojice 2 vs Výherce dvojice 4
 V případě stavu 1-1 na zápasy si hráči zahrají finální</p>
-              <div id="upcomingMatches"></div>
-            </div>
-          </section>
-        </main>
+<div id="upcomingMatches"></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+
+```
+<!-- 3D Robot Guide -->
+<div class="robot-container" onclick="startTutorial()">
+  <div class="robot">
+    <div class="robot-head">
+      <div class="robot-eyes">
+        <div class="robot-eye"></div>
+        <div class="robot-eye"></div>
       </div>
     </div>
-
-    <!-- 3D Robot Guide -->
-    <div class="robot-container" onclick="startTutorial()">
-      <div class="robot">
-        <div class="robot-head">
-          <div class="robot-eyes">
-            <div class="robot-eye"></div>
-            <div class="robot-eye"></div>
-          </div>
-        </div>
-        <div class="robot-body"></div>
-        <div class="robot-arms">
-          <div class="robot-arm left"></div>
-          <div class="robot-arm right"></div>
-        </div>
-        <div class="robot-legs">
-          <div class="robot-leg left"></div>
-          <div class="robot-leg right"></div>
-        </div>
-      </div>
+    <div class="robot-body"></div>
+    <div class="robot-arms">
+      <div class="robot-arm left"></div>
+      <div class="robot-arm right"></div>
     </div>
-
-    <!-- Tutorial Arrows -->
-    <div class="tutorial-arrow" id="tutorialArrow">
-      <div class="arrow"></div>
-      <div class="arrow-text" id="arrowText"></div>
+    <div class="robot-legs">
+      <div class="robot-leg left"></div>
+      <div class="robot-leg right"></div>
     </div>
+  </div>
+</div>
+
+<!-- Tutorial Arrows -->
+<div class="tutorial-arrow" id="tutorialArrow">
+  <div class="arrow"></div>
+  <div class="arrow-text" id="arrowText"></div>
+</div>
+```
 
     <script>
       // Players data
